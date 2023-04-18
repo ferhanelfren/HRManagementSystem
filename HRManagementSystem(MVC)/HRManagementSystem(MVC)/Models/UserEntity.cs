@@ -2,7 +2,6 @@
 {
     public class UserEntity
     {
-
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Firstname { get; set; }
@@ -13,7 +12,5 @@
         public string CityorMunicipality { get; set; }
         public string Province { get; set; }
         public string Country { get; set; }
-
-
     }
 }

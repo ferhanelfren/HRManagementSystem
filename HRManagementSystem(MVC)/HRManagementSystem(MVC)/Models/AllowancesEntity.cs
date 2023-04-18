@@ -6,6 +6,7 @@
         public string AllowanceName { get; set; }
         public int AllowanceAmount { get; set; }
         public string AllowanceDescription { get; set; }
+        public string AllowanceEffectiveDate { get; set; }
         public DateOnly TimeStamp { get; set; }
     }
 }

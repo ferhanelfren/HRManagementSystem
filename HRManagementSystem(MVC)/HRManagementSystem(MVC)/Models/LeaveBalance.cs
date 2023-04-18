@@ -3,6 +3,7 @@
     public class LeaveBalance
     {
         public int Id { get; set; }
+        public EmployeeEntity Employee { get; set; }
         public int LeaveTotal { get; set; }
         public int LeaveUsed { get; set; }
         public int LeaveAccepted { get; set; }

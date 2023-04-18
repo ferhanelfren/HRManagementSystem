@@ -11,6 +11,5 @@
         public DateOnly TaskDate { get; set; }
         public string TaskDescription { get; set; }
         public DateOnly Timestamp { get; set; }
-
     }
 }

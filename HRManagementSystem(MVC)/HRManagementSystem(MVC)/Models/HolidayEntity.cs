@@ -5,9 +5,9 @@
         public int Id { get; set; }
         public string HolidayName { get; set; }
         public DateOnly HolidayDate { get; set; }
-        public string Location { get; set; }
-        public string Shift { get; set; }
-        public string Details { get; set; }
+        public string HolidayLocation { get; set; }
+        public string HolidayShift { get; set; }
+        public string HolidayDetails { get; set; }
         public DateOnly TimeStamp { get; set; }
 
     }

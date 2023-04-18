@@ -3,7 +3,8 @@
     public class LeaveEntity
     {
         public int Id { get; set; }
-        public string LeaveType { get; set; }
+        public EmployeeEntity Employee { get; set; }
+        public LeaveTypesEntity LeaveTypes { get; set; }
         public DateOnly ApplyDate { get; set; }
         public DateOnly LeaveFrom { get; set; }
         public DateOnly LeaveTo { get; set; }
