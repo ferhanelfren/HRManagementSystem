@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex
+/.vs/HRManagementSystem/v17
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/project.razor.vs.json
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/project.assets.json
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/HumanResourceManagementSystem.csproj.nuget.g.props
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/HumanResourceManagementSystem.csproj.nuget.dgspec.json
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex/f59348db-65e8-4c97-90ed-fcbd984c3e12.vsidx
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex/e5b3e57a-63b5-4d0d-8899-0e311f82c62e.vsidx
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex/d151522f-d6da-422d-a641-e12a6b97680b.vsidx
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex/b96b4502-d0a6-447a-aca3-e656f2076f7b.vsidx
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex/50b57da5-e8fd-4f85-9946-e398cd667932.vsidx
