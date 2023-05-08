@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core';
-<<<<<<< HEAD
-=======
+// <<<<<<< HEAD
+// =======
 import { take } from 'rxjs';
 import { DataClient, EmployeeEntity } from 'swagger-generate';
->>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
+//>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 
 @Injectable({
   providedIn: 'root',
 })
 export class TestService {
-<<<<<<< HEAD
-
-
-  constructor(public authClient: AuthenticationExtensionsClientInputs) {
-
-  }
-
-  
-=======
+//<<<<<<< HEAD  
+// =======
  
   constructor(public dataClient: DataClient) {
     
@@ -27,6 +20,6 @@ export class TestService {
     return this.dataClient.getEmployee().pipe(take(1));
   }
 
->>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
+// >>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 
 }

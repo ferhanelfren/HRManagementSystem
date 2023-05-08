@@ -25,18 +25,18 @@ export class SigninComponent
   //error = '';
   errorAlrtMsg!: string;
   hide = true;
-<<<<<<< HEAD
+//<<<<<<< HEAD
   model:any = {};
   showErrMsg = false;
   showAlrtMsg = false;
 
 
-=======
+//=======
 
 
   employee: EmployeeEntity | undefined;
   
->>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
+//>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
@@ -113,7 +113,7 @@ export class SigninComponent
   }
 
   onLogin(){
-    this.authService.login(this.model).subscribe({
+    this.authService.login(this.model.username, this.model.password).subscribe({
       next: _ => {
         //this.model.navigateByUrl(''),
         this.showAlrtMsg = true;

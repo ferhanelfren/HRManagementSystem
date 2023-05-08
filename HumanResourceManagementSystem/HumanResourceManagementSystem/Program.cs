@@ -12,12 +12,12 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-<<<<<<< HEAD
+
 builder.Services.AddCors();
 
-=======
+
 builder.Services.AddSwaggerDocument();
->>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
+
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
