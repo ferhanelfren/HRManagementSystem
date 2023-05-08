@@ -24,10 +24,22 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+<<<<<<< HEAD
   login(model: any) {
     return this.http.post<User>(this.baseURL + 'Authentication/login', model).pipe(
       map((response: User) => {
         const user = response;
+=======
+  login(username: string, password: string) {
+    return this.http
+      .post<User>(`${environment.apiUrl}/authentication/login`, {
+        username,
+        password,
+      })
+      .pipe(
+        map((user) => {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 
           if(user){
             localStorage.setItem('user', JSON.stringify(user));

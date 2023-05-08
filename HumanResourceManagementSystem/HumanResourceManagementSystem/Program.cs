@@ -12,11 +12,15 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+<<<<<<< HEAD
 builder.Services.AddCors();
 
+=======
+builder.Services.AddSwaggerDocument();
+>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
@@ -59,16 +63,30 @@ if (app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	//app.UseSwagger();
+	//app.UseSwaggerUI();
+	app.UseOpenApi(); // serve OpenAPI/Swagger documents
+	app.UseSwaggerUi3();
 }
+
+//app.UseHttpsRedirection();
+//app.UseStaticFiles();
+
+//app.UseRouting();
+
+//app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+
 
 app.MapControllerRoute(
     name: "default",
