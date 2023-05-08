@@ -8,6 +8,8 @@ import {
 import { AuthService } from 'src/app/core/service/auth.service';
 import { Role } from 'src/app/core/models/role';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
+import { TestService } from 'src/app/core/service/test.service';
+import { EmployeeEntity } from 'swagger-generate';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -22,11 +24,16 @@ export class SigninComponent
   loading = false;
   error = '';
   hide = true;
+
+
+  employee: EmployeeEntity | undefined;
+  
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private testService: TestService
   ) {
     super();
   }
@@ -35,6 +42,11 @@ export class SigninComponent
     this.authForm = this.formBuilder.group({
       username: ['admin@software.com', Validators.required],
       password: ['admin@123', Validators.required],
+    });
+
+    this.testService.getEmployee().subscribe(r => {
+      this.employee = r;
+      console.log (this.employee);
     });
   }
   get f() {

@@ -1,6 +1,7 @@
 ﻿using HRManagementSystem_MVC_.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace HumanResourceManagementSystem.Controllers.Api
 {
@@ -14,8 +15,8 @@ namespace HumanResourceManagementSystem.Controllers.Api
 		}
 
 		[HttpGet]
-
-		public EmployeeEntity GetEmployee() {
+		public EmployeeEntity GetEmployee()
+		{
 			return new EmployeeEntity
 			{
 				Id = 1,
@@ -23,5 +24,7 @@ namespace HumanResourceManagementSystem.Controllers.Api
 				LName = "Last Name"
 			};
 		}
+
+
 	}
 }

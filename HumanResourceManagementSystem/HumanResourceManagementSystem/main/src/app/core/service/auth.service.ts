@@ -25,7 +25,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<User>(`${environment.apiUrl}/authenticate`, {
+      .post<User>(`${environment.apiUrl}/authentication/login`, {
         username,
         password,
       })
