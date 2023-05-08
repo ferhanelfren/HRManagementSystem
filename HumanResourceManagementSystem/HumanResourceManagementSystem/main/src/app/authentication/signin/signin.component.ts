@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   UntypedFormBuilder,
@@ -17,14 +17,17 @@ export class SigninComponent
   extends UnsubscribeOnDestroyAdapter
   implements OnInit
 {
-  
-  @Output() cancelRegister = new EventEmitter();
   authForm!: UntypedFormGroup;
   submitted = false;
   loading = false;
-  error = '';
+  //error = '';
+  errorAlrtMsg!: string;
   hide = true;
   model:any = {};
+  showErrMsg = false;
+  showAlrtMsg = false;
+
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
@@ -56,20 +59,6 @@ export class SigninComponent
     this.authForm.get('password')?.setValue('client@123');
   }
   onSubmit() {
-    this.submitted = true;
-    this.loading = true;
-    this.error = '';
-
-    if(this.authForm.invalid){
-      this.error = 'Username and Password not valid !';
-      return;
-    } else{
-      this.authService.login(this.model).subscribe({
-        next: _ => this.router.navigateByUrl('/admin/dashboard/main'),
-      })
-    }
-
-   
     // this.submitted = true;
     // this.loading = true;
     // this.error = '';
@@ -106,5 +95,24 @@ export class SigninComponent
     //       }
     //     );
     // }
+  }
+
+  onLogin(){
+    this.authService.login(this.model).subscribe({
+      next: _ => {
+        //this.model.navigateByUrl(''),
+        this.showAlrtMsg = true;
+        setTimeout(() => {
+          this.showAlrtMsg = false;
+        }, 5000);
+      },
+      error: error => {
+        this.errorAlrtMsg = error.toString();
+        this.showErrMsg = true;
+        setTimeout(() => {
+          this.showErrMsg = false;
+        }, 5000);
+      }
+    })
   }
 }

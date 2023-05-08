@@ -18,7 +18,11 @@ export class SignupComponent implements OnInit {
   returnUrl!: string;
   hide = true;
   chide = true;
+  showAlrtMsg = false;
+  showErrMsg = false;
+  errorAlrtMsg!: string;
   model:any = {};
+
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -26,6 +30,7 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private authService: AuthService
   ) {}
+
   ngOnInit() {
     this.authForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -54,8 +59,22 @@ export class SignupComponent implements OnInit {
 
   onRegister(){
     this.authService.register(this.model).subscribe({
-      next: ()=> {
-        this.router.navigate(['/authentication/signin']);
+      next: () => {
+        this.showAlrtMsg = true;
+        this.cancel();
+        setTimeout(() => {
+          this.showAlrtMsg = false;
+          this.router.navigate(['/authentication/signin']);
+        }, 4000);
+      },
+      //error: error => console.log(error)
+      error: error => {
+        //this.errorAlrtMsg = error.message;
+        this.errorAlrtMsg = error.toString();
+        this.showErrMsg = true;
+        setTimeout(() => {
+          this.showErrMsg = false;
+        }, 4000);
       }
     })
   }

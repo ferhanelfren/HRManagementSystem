@@ -1,7 +1,22 @@
 
 <div class="auth-container auth-form-parent-signup-container">
+
   <div class="auth-form-child-signup-container">
       <div class="form-section">
+        <div class="alert alert-success alrt-msg" role="alert" *ngIf="showAlrtMsg">
+            <p>
+                <strong>Success!</strong> &nbsp;&nbsp;
+                You have successfully registered to this system 
+                <br>
+                and are now being redirected to the login page.
+            </p>
+        </div>
+        <div class="alert alert-danger alrt-msg auth-wrappe" role="alert" *ngIf="showErrMsg">
+          <p>
+              <strong>Error:</strong> &nbsp;&nbsp;
+              {{errorAlrtMsg}}
+          </p>
+        </div>
           <div class="auth-wrappe">
             <h2 class="welcome-msg"> Sign Up </h2>
             <p class="auth-signup-text text-muted">Enter details to create your account</p>
@@ -38,7 +53,8 @@
                     <mat-icon matSuffix (click)="hide = !hide">
                       {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="authForm.get('password')?.hasError('required')">
-                      Password is required
+                      Password is required with minimum of 8 characters, <br>
+                      , including uppercase letters, special characters, and numeric values.
                     </mat-error>
                   </mat-form-field>
                 </div>
