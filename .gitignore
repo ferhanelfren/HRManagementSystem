@@ -41,3 +41,9 @@
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/refint/HumanResourceManagementSystem.dll
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/HumanResourceManagementSystem.csproj.nuget.g.targets
 /HumanResourceManagementSystem/HumanResourceManagementSystem/HumanResourceManagementSystem.csproj.user
+*.1
+*.dll
+/HumanResourceManagementSystem/HumanResourceManagementSystem/bin/Debug/net6.0/HumanResourceManagementSystem.deps.json
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/project.nuget.cache
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.csproj.AssemblyReference.cache
+/HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.assets.cache
