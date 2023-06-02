@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { Page404Component } from "src/app/authentication/page404/page404.component";
+import { Page404Component } from "src/app/authentication/locked/page404/page404.component";
 import { MyProjectsComponent } from "./my-projects/my-projects.component";
 import { ProjectDetailsComponent } from "./project-details/project-details.component";
 

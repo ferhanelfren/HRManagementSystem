@@ -30,7 +30,7 @@ const users: User[] = [
     password: 'employee@123',
     firstName: 'Ashton',
     lastName: 'Cox',
-    role: Role.Employee,
+    role: Role.User,
     token: 'employee-token',
   },
   {

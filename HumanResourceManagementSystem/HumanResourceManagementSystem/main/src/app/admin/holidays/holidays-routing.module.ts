@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AllHolidayComponent } from "./all-holidays/all-holidays.component";
 import { AddHolidayComponent } from "./add-holiday/add-holiday.component";
 import { EditHolidayComponent } from "./edit-holiday/edit-holiday.component";
-import { Page404Component } from "../../authentication/page404/page404.component";
+import { Page404Component } from "../../authentication/locked/page404/page404.component";
 const routes: Routes = [
   {
     path: "all-holidays",

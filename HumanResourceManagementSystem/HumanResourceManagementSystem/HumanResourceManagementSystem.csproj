@@ -2,14 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="main2\**" />
     <Compile Remove="main\**" />
+    <Content Remove="main2\**" />
     <Content Remove="main\**" />
+    <EmbeddedResource Remove="main2\**" />
     <EmbeddedResource Remove="main\**" />
+    <None Remove="main2\**" />
     <None Remove="main\**" />
   </ItemGroup>
 
