@@ -11,6 +11,10 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+
+  // private currentUserSource = new BehaviorSubject<User>(null);
+  // currentUser$ = this.currentUserSource.asObservable();
+
   baseURL = 'https://localhost:5001/api/';
 
   constructor(private http: HttpClient) {
@@ -21,27 +25,33 @@ export class AuthService {
   }
 
   public get currentUserValue(): User {
-    return this.currentUserSubject.value;
+     return this.currentUserSubject.value;
   }
 
-//<<<<<<< HEAD
- 
-//=======
-  login(username: string, password: string) {
+
+  getUserRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseURL}/roles`);
+  }
+
+  hasRole(role: string): Observable<boolean> {
+    return this.getUserRoles().pipe(
+      map((roles: string[]) => roles.includes(role))
+    );
+  }
+
+
+  login(model: any) {
     return this.http
-      .post<User>(`${environment.apiUrl}/api/Authentication/login`, {
-        username,
-        password,
-      })
+      .post<User>(`${environment.apiUrl}api/Authentication/login`, model)
       .pipe(
         map((user) => {
-          if(user){
-            localStorage.setItem('user', JSON.stringify(user));
-            this.currentUserSubject.next(user);
-          }
-
-      })
-    )
+          console.log(user);
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          return user;
+        })
+      );
   }
 
   logout() {

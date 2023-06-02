@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // <<<<<<< HEAD
 // =======
 import { take } from 'rxjs';
-import { DataClient, EmployeeEntity } from 'swagger-generate';
+import { DataClient } from 'src/app/swagger-generated';
 //>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 
 @Injectable({
@@ -16,9 +16,9 @@ export class TestService {
     
   }
 
-  getEmployee() {
-    return this.dataClient.getEmployee().pipe(take(1));
-  }
+  // getEmployee() {
+  //   return this.dataClient.getLeaveBalance().pipe(take(1));
+  // }
 
 // >>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
 

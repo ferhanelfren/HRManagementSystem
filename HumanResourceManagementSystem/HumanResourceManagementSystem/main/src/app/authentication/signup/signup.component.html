@@ -6,7 +6,7 @@
         <div class="alert alert-success alrt-msg" role="alert" *ngIf="showAlrtMsg">
             <p>
                 <strong>Success!</strong> &nbsp;&nbsp;
-                You have successfully registered to this system 
+                You have successfully registered to this system
                 <br>
                 and are now being redirected to the login page.
             </p>
@@ -68,6 +68,18 @@
                       {{chide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="authForm.get('cpassword')?.hasError('required')">
                       Confirm Password is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" [(ngModel)]="model.firstName" required>
+                    <mat-error *ngIf="authForm.get('firstName')?.hasError('required')">
+                      First Name is required
                     </mat-error>
                   </mat-form-field>
                 </div>

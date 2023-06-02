@@ -577,7 +577,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -589,7 +589,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -601,7 +601,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -613,7 +613,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -625,7 +625,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -637,7 +637,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -649,7 +649,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   {
@@ -661,7 +661,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['Employee'],
+    role: ['User'],
     submenu: [],
   },
   // Client Modules

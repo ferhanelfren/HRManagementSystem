@@ -3,9 +3,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { AuthService } from 'src/app/core/service/auth.service';
+
+interface Gender {
+  value: string;
+  viewValue: string;
+}
+
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -22,6 +29,7 @@ export class SignupComponent implements OnInit {
   showErrMsg = false;
   errorAlrtMsg!: string;
   model:any = {};
+  selectedValue: string;
 
 
   constructor(
@@ -82,4 +90,9 @@ export class SignupComponent implements OnInit {
   cancel(){
     this.cancelRegister.emit(false);
   }
+
+  gender: Gender[] = [
+    {value: 'male', viewValue: 'Male'},
+    {value: 'female', viewValue: 'Female'},
+  ];
 }

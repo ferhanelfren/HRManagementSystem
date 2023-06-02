@@ -9,7 +9,10 @@ import { AuthService } from 'src/app/core/service/auth.service';
 import { Role } from 'src/app/core/models/role';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
 import { TestService } from 'src/app/core/service/test.service';
-import { EmployeeEntity } from 'swagger-generate';
+import { EmployeeEntity, LeaveBalance } from 'src/app/swagger-generated';
+import { User } from 'src/app/core/models/user';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -22,45 +25,43 @@ export class SigninComponent
   authForm!: UntypedFormGroup;
   submitted = false;
   loading = false;
-  //error = '';
+
+
+
   errorAlrtMsg!: string;
   hide = true;
-//<<<<<<< HEAD
+
   model:any = {};
   showErrMsg = false;
   showAlrtMsg = false;
-
-
-//=======
-
+  showAlrtMsgOne = false;
 
   employee: EmployeeEntity | undefined;
-  
-//>>>>>>> a3841c918aba13e2eddb99df31f6f1bc77af33b8
+  leaveBalance: LeaveBalance;
+  error: string;
+  isAdmin: Observable<boolean>;
+
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private testService: TestService
   ) {
     super();
   }
 
-  ngOnInit() {
+  get f() {
+    return this.authForm.controls;
+  }
+
+  ngOnInit(){
     this.authForm = this.formBuilder.group({
       username: ['admin@software.com', Validators.required],
       password: ['admin@123', Validators.required],
     });
+  }
 
-    this.testService.getEmployee().subscribe(r => {
-      this.employee = r;
-      console.log (this.employee);
-    });
-  }
-  get f() {
-    return this.authForm.controls;
-  }
   adminSet() {
     this.authForm.get('username')?.setValue('admin@software.com');
     this.authForm.get('password')?.setValue('admin@123');
@@ -73,61 +74,29 @@ export class SigninComponent
     this.authForm.get('username')?.setValue('client@software.com');
     this.authForm.get('password')?.setValue('client@123');
   }
+
   onSubmit() {
-    // this.submitted = true;
-    // this.loading = true;
-    // this.error = '';
-    // if (this.authForm.invalid) {
-    //   this.error = 'Username and Password not valid !';
-    //   return;
-    // } else {
-    //   this.subs.sink = this.authService
-    //     .login(this.f['username'].value, this.f['password'].value)
-    //     .subscribe(
-    //       (res) => {
-    //         if (res) {
-    //           setTimeout(() => {
-    //             const role = this.authService.currentUserValue.role;
-    //             if (role === Role.All || role === Role.Admin) {
-    //               this.router.navigate(['/admin/dashboard/main']);
-    //             } else if (role === Role.Employee) {
-    //               this.router.navigate(['/employee/dashboard']);
-    //             } else if (role === Role.Client) {
-    //               this.router.navigate(['/client/dashboard']);
-    //             } else {
-    //               this.router.navigate(['/authentication/signin']);
-    //             }
-    //             this.loading = false;
-    //           }, 1000);
-    //         } else {
-    //           this.error = 'Invalid Login';
-    //         }
-    //       },
-    //       (error) => {
-    //         this.error = error;
-    //         this.submitted = false;
-    //         this.loading = false;
-    //       }
-    //     );
-    // }
+      this.authService.login(this.model).subscribe(
+        (response: any) => {
+          const role = response.role
+          if(role === 'Admin') {
+            this.showAlrtMsg = true;
+            this.router.navigate(['/admin/dashboard/main']);
+          } else if(role === 'User'){
+            this.showAlrtMsg = true;
+            this.router.navigate(['/employee/dashboard']);
+          }
+          else{
+            this.showErrMsg = true;
+          }
+        },
+        (error: any) => {
+          this.errorAlrtMsg = error.toString();
+          this.showErrMsg = true;
+        }
+      );
   }
 
-  onLogin(){
-    this.authService.login(this.model.username, this.model.password).subscribe({
-      next: _ => {
-        //this.model.navigateByUrl(''),
-        this.showAlrtMsg = true;
-        setTimeout(() => {
-          this.showAlrtMsg = false;
-        }, 5000);
-      },
-      error: error => {
-        this.errorAlrtMsg = error.toString();
-        this.showErrMsg = true;
-        setTimeout(() => {
-          this.showErrMsg = false;
-        }, 5000);
-      }
-    })
-  }
+
+
 }
