@@ -42,6 +42,7 @@ export class HeaderComponent
   isOpenSidebar?: boolean;
   docElement: HTMLElement | undefined;
   isFullScreen = false;
+  userFullName: number;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -113,16 +114,17 @@ export class HeaderComponent
   ngOnInit() {
     this.config = this.configService.configData;
     const userRole = this.authService.currentUserValue.role;
+    const namingService = this.authService.currentUserValue.id;
     this.userImg = this.authService.currentUserValue.img;
+
+    this.userFullName = namingService;
 
     if (userRole === 'Admin') {
       this.homePage = 'admin/dashboard/main';
-    } else if (userRole === 'Client') {
-      this.homePage = 'client/dashboard';
-    } else if (userRole === 'Employee') {
+    } else if (userRole === 'User') {
       this.homePage = 'employee/dashboard';
     } else {
-      this.homePage = 'admin/dashboard/main';
+      this.homePage = 'client/dashboard';
     }
 
     this.langStoreValue = localStorage.getItem('lang') as string;

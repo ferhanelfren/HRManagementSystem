@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { Page404Component } from "src/app/authentication/page404/page404.component";
+import { Page404Component } from "src/app/authentication/locked/page404/page404.component";
 import { TicketDetailsComponent } from "./ticket-details/ticket-details.component";
 import { TicketsComponent } from "./tickets/tickets.component";
 

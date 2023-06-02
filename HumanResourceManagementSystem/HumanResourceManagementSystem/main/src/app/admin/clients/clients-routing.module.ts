@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AddClientComponent } from "./add-client/add-client.component";
 import { EditClientComponent } from "./edit-client/edit-client.component";
-import { Page404Component } from "../../authentication/page404/page404.component";
+import { Page404Component } from "../../authentication/locked/page404/page404.component";
 import { AllclientComponent } from "./all-clients/all-clients.component";
 const routes: Routes = [
   {

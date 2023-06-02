@@ -1,0 +1,20 @@
+.auth-form-parent-signup-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    height: 100vh; 
+    overflow: auto;
+}
+
+.alrt-msg{
+    display: flex;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.auth-form-child-signup-container{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}

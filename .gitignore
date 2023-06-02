@@ -3,6 +3,9 @@
 ################################################################################
 
 /HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/FileContentIndex
+[Dd]ebug/
+[Rr]elease
+/.vs/
 /.vs/HRManagementSystem/v17
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/project.razor.vs.json
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
@@ -48,3 +51,6 @@
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.csproj.AssemblyReference.cache
 /HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.assets.cache
 /HumanResourceManagementSystem/HumanResourceManagementSystem/main2/node_modules/@angular-eslint/eslint-plugin-template/dist/eslint-plugin-template/src/utils/is-interactive-element/get-interactive-element-ax-object-schemas.d.ts
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/v17/fileList.bin
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/v17/.suo
+/HumanResourceManagementSystem/.vs/HumanResourceManagementSystem/v17/.futdcache.v2

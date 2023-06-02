@@ -1,4 +1,5 @@
-﻿using HumanResourceManagementSystem.Models;
+﻿using HumanResourceManagementSystem.Identity;
+using HumanResourceManagementSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HumanResourceManagementSystem.Controllers
+namespace HumanResourceManagementSystem.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,6 +33,7 @@ namespace HumanResourceManagementSystem.Controllers
         [Route("login")]
         public async Task<ActionResult> Login([FromBody] LoginModel loginModel)
         {
+
             var user = await _userManager.FindByNameAsync(loginModel.Username);
 
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
@@ -51,11 +53,16 @@ namespace HumanResourceManagementSystem.Controllers
 
                 var token = GetToken(authClaims);
 
+                var roles = userRoles.FirstOrDefault();
+
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken((SecurityToken)token),
-                    expiration = token.ValidTo
+                    expiration = token.ValidTo,
+                    role = roles
                 });
+
+                
             }
             return Unauthorized();
         }
@@ -66,7 +73,10 @@ namespace HumanResourceManagementSystem.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = "User already exists!" });
+            }
 
             IdentityUser user = new()
             {
@@ -74,12 +84,29 @@ namespace HumanResourceManagementSystem.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                
+                
+
+                if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+                if (await _roleManager.RoleExistsAsync(UserRoles.User))
+                {
+                    await _userManager.AddToRoleAsync(user, UserRoles.User);
+                }
+
+                return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new Response { Status = "Error", Message = "Invalid password format." });
         }
+
 
 
         [HttpPost]
@@ -109,10 +136,7 @@ namespace HumanResourceManagementSystem.Controllers
             {
                 await _userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
-            }
+          
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
@@ -123,13 +147,12 @@ namespace HumanResourceManagementSystem.Controllers
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddHours(24),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
 
             return token;
         }
-
     }
 }
