@@ -1,0 +1,1 @@
+{"version":3,"file":"read-mail.component.js","sourceRoot":"","sources":["../../../../../src/app/email/read-mail/read-mail.component.ts"],"names":[],"mappings":";;;;AAAA,sCAA0C;AAM1C;IACE;QACE,cAAc;IAChB,CAAC;IAHU,iBAAiB;QAL7B,gBAAS,CAAC;YACT,QAAQ,EAAE,eAAe;YACzB,WAAW,EAAE,4BAA4B;YACzC,SAAS,EAAE,CAAC,4BAA4B,CAAC;SAC1C,CAAC;OACW,iBAAiB,CAI7B;IAAD,wBAAC;CAAA,AAJD,IAIC;AAJY,8CAAiB"}

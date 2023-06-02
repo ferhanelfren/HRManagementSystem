@@ -1,0 +1,1 @@
+{"version":3,"file":"inbox.component.js","sourceRoot":"","sources":["../../../../../src/app/email/inbox/inbox.component.ts"],"names":[],"mappings":";;;;AAAA,sCAA0C;AAM1C;IACE;QACE,cAAc;IAChB,CAAC;IAHU,cAAc;QAL1B,gBAAS,CAAC;YACT,QAAQ,EAAE,WAAW;YACrB,WAAW,EAAE,wBAAwB;YACrC,SAAS,EAAE,CAAC,wBAAwB,CAAC;SACtC,CAAC;OACW,cAAc,CAI1B;IAAD,qBAAC;CAAA,AAJD,IAIC;AAJY,wCAAc"}
