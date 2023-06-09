@@ -1,1 +1,0 @@
-{"version":3,"file":"faqs.component.js","sourceRoot":"","sources":["../../../../../src/app/extra-pages/faqs/faqs.component.ts"],"names":[],"mappings":";;;;AAAA,sCAA0C;AAM1C;IACE;QACE,cAAc;IAChB,CAAC;IAHU,aAAa;QALzB,gBAAS,CAAC;YACT,QAAQ,EAAE,UAAU;YACpB,WAAW,EAAE,uBAAuB;YACpC,SAAS,EAAE,CAAC,uBAAuB,CAAC;SACrC,CAAC;OACW,aAAa,CAIzB;IAAD,oBAAC;CAAA,AAJD,IAIC;AAJY,sCAAa"}

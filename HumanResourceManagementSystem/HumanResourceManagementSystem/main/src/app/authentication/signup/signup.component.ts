@@ -28,7 +28,7 @@ export class SignupComponent implements OnInit {
   showAlrtMsg = false;
   showErrMsg = false;
   errorAlrtMsg!: string;
-  model:any = {};
+  // model:any = {};
   selectedValue: string;
 
 
@@ -66,25 +66,25 @@ export class SignupComponent implements OnInit {
   }
 
   onRegister(){
-    this.authService.register(this.model).subscribe({
-      next: () => {
-        this.showAlrtMsg = true;
-        this.cancel();
-        setTimeout(() => {
-          this.showAlrtMsg = false;
-          this.router.navigate(['/authentication/signin']);
-        }, 4000);
-      },
-      //error: error => console.log(error)
-      error: error => {
-        //this.errorAlrtMsg = error.message;
-        this.errorAlrtMsg = error.toString();
-        this.showErrMsg = true;
-        setTimeout(() => {
-          this.showErrMsg = false;
-        }, 4000);
-      }
-    })
+    // this.authService.register(this.model).subscribe({
+    //   next: () => {
+    //     this.showAlrtMsg = true;
+    //     this.cancel();
+    //     setTimeout(() => {
+    //       this.showAlrtMsg = false;
+    //       this.router.navigate(['/authentication/signin']);
+    //     }, 4000);
+    //   },
+    //   //error: error => console.log(error)
+    //   error: error => {
+    //     //this.errorAlrtMsg = error.message;
+    //     this.errorAlrtMsg = error.toString();
+    //     this.showErrMsg = true;
+    //     setTimeout(() => {
+    //       this.showErrMsg = false;
+    //     }, 4000);
+    //   }
+    // })
   }
 
   cancel(){

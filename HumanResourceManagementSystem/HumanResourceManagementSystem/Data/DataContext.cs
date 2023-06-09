@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HumanResourceManagementSystem.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HumanResourceManagementSystem.Data
 {
-    public class DataContext : IdentityDbContext
+    public class DataContext : IdentityDbContext<HRMSUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 

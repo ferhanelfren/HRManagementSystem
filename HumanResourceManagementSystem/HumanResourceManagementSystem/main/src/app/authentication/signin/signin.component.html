@@ -9,12 +9,12 @@
               </a>
             </p>
             <h2 class="login-title">Sign in</h2>
-            <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onLogin()">
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Username</mat-label>
-                    <input matInput formControlName="username" [(ngModel)]="model.username" />
+                    <input matInput formControlName="username" [(ngModel)]="loginModel.username"/>
                     <mat-icon matSuffix class="face-icon">face</mat-icon>
                     <mat-error *ngIf="authForm.get('username')?.hasError('required')">
                       Username is required
@@ -26,7 +26,7 @@
                 <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" [(ngModel)]="model.password">
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" [(ngModel)]="loginModel.password">
                     <a class="show-pwd-icon" href="#" onClick="return false;" matSuffix (click)="hide = !hide"
                       [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                       <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

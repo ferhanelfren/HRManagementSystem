@@ -82,9 +82,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       //console.log(this.authService.currentUserValue.role);
       if(userRole === 'Admin'){
+        this.userFullName =
+        this.authService.currentUserValue.username;
         this.userType = 'Administrator';
       } else{
-        this.userType = 'Staff';
+        this.userType = 'Employee';
       }
     }
 

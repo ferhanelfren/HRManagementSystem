@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -6,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from 'src/app/core/service/auth.service';
-import { Role } from 'src/app/core/models/role';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
-import { EmployeeEntity, LeaveBalance } from 'src/app/swagger-generated';
-import { User } from 'src/app/core/models/user';
+
+
 import { Observable } from 'rxjs';
+import { LoginVM} from 'src/app/swagger-generated-hrms';
 
 @Component({
   selector: 'app-signin',
@@ -30,13 +31,14 @@ export class SigninComponent
   errorAlrtMsg!: string;
   hide = true;
 
-  model:any = {};
+  loginModel= new LoginVM();
+
   showErrMsg = false;
   showAlrtMsg = false;
   showAlrtMsgOne = false;
 
-  employee: EmployeeEntity | undefined;
-  leaveBalance: LeaveBalance;
+  // employee: EmployeeEntity | undefined;
+  // leaveBalance: LeaveBalance;
   error: string;
   isAdmin: Observable<boolean>;
 
@@ -74,10 +76,32 @@ export class SigninComponent
     this.authForm.get('password')?.setValue('client@123');
   }
 
-  onSubmit() {
-      this.authService.login(this.model).subscribe(
+  // onSubmit() {
+  //     this.authService.login(this.login).subscribe(
+  //       (response: any) => {
+  //         const role = response.role
+  //         if(role === 'Admin') {
+  //           this.showAlrtMsg = true;
+  //           this.router.navigate(['/admin/dashboard/main']);
+  //         } else if(role === 'User'){
+  //           this.showAlrtMsg = true;
+  //           this.router.navigate(['/employee/dashboard']);
+  //         }
+  //         else{
+  //           this.showErrMsg = true;
+  //         }
+  //       },
+  //       (error: any) => {
+  //         this.errorAlrtMsg = error.toString();
+  //         this.showErrMsg = true;
+  //       }
+  //     );
+  // }
+
+  onLogin() {
+      this.authService.login(this.loginModel).subscribe(
         (response: any) => {
-          const role = response.role
+          const role = response.role;
           if(role === 'Admin') {
             this.showAlrtMsg = true;
             this.router.navigate(['/admin/dashboard/main']);
@@ -94,6 +118,7 @@ export class SigninComponent
           this.showErrMsg = true;
         }
       );
+
   }
 
 

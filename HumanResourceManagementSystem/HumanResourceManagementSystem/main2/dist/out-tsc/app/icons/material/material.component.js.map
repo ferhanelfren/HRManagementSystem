@@ -1,1 +1,0 @@
-{"version":3,"file":"material.component.js","sourceRoot":"","sources":["../../../../../src/app/icons/material/material.component.ts"],"names":[],"mappings":";;;;AAAA,sCAA0C;AAM1C;IACE;QACE,cAAc;IAChB,CAAC;IAHU,iBAAiB;QAL7B,gBAAS,CAAC;YACT,QAAQ,EAAE,cAAc;YACxB,WAAW,EAAE,2BAA2B;YACxC,SAAS,EAAE,CAAC,2BAA2B,CAAC;SACzC,CAAC;OACW,iBAAiB,CAI7B;IAAD,wBAAC;CAAA,AAJD,IAIC;AAJY,8CAAiB"}
