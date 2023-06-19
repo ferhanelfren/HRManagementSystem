@@ -1,4 +1,5 @@
 ﻿using HumanResourceManagementSystem.Services;
+using HumanResourceManagementSystem.ViewModels;
 using HumanResourceManagementSystem.ViewModels.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,35 @@ namespace HumanResourceManagementSystem.Controllers.Api
             _accountService = accountService;
         }
 
-        [HttpGet]
-        [Route("getusers")]
-        public async Task<IActionResult> GetUsers(string guidFilter = null)
+        //[HttpGet]
+        //public async Task<ActionResult<List<EmployeeVM>>> GetUsers(string useruserNameFilter = null)
+        //{
+        //    var users = await _accountService.GetUsers(useruserNameFilter);
+        //    if(users == null)
+        //    {
+        //        return BadRequest("Faild to retrieve users.");
+        //    }
+
+        //    return Ok(users);
+        //}
+
+        [HttpGet("GetUsers")]
+        public async Task<ActionResult> GetUsers(string userNameFilter = null)
         {
-            var users = await _accountService.GetUsers(guidFilter);
-            return Ok(users);
+            try
+            {
+                var employees = await _accountService.GetUsers(userNameFilter);
+                if (employees == null)
+                {
+                    return BadRequest("Failed to retrieve users.");
+                }
+                return Ok(employees);
+            }catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving employees.");
+            }
         }
+
 
         [HttpPost]
         [Route("login")]
@@ -72,6 +95,9 @@ namespace HumanResourceManagementSystem.Controllers.Api
         }
 
 
+
+
     }
+
 
 }

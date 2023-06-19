@@ -1,6 +1,6 @@
-﻿namespace HumanResourceManagementSystem.Models.Identity
+﻿namespace HumanResourceManagementSystem.Models
 {
-    public class Position
+    public class Positions
     {
         public int Id { get; set; }
         public string PositionName { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace SampleWEBAPI.Models
+﻿namespace HumanResourceManagementSystem.Models
 {
     public class Response
     {

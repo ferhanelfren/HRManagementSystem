@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceManagementSystem.Data;
+using HumanResourceManagementSystem.Models;
 using HumanResourceManagementSystem.Models.Identity;
 using HumanResourceManagementSystem.ViewModels;
 using HumanResourceManagementSystem.ViewModels.Identity;
@@ -23,6 +24,7 @@ namespace HumanResourceManagementSystem.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly EmployeeService _employeeService;
         private readonly TokenVm _tokenVm;
         private readonly Response _response;
         public AccountService(
@@ -30,47 +32,39 @@ namespace HumanResourceManagementSystem.Services
             UserManager<HRMSUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
-            IMapper mapper)
+            IMapper mapper, 
+            EmployeeService employeeService)
         {
             _dataContext = dataContext;
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _mapper = mapper;
+            _employeeService = employeeService;
             _tokenVm = new TokenVm();
             _response = new Response();
         }
 
 
-        public async Task<List<EmployeeVM>> GetUsers(string guidFilter = null)
+        public async Task<List<EmployeeVM>> GetUsers(string userNameFilter = null)
         {
             try
             {
+                
                 IQueryable<HRMSUser> query = _dataContext.Users;
 
-                if (!string.IsNullOrEmpty(guidFilter))
+                if(!string.IsNullOrEmpty(userNameFilter))
                 {
-                    query = query.Where(u => u.UserName == guidFilter);
+                    query = query.Where( u => u.UserName == userNameFilter );
                 }
 
-                //query = query.Where(u => u.isAdmin);
+                //var users = await query.ToArrayAsync();
+                var users = await query.ToListAsync();
+                var usersToReturn = _mapper.Map<List<EmployeeVM>>(users);
+                return usersToReturn;
 
-                var users = await query.ToArrayAsync();
-
-                var usersToReturn = new List<EmployeeVM>();
-                foreach (var user in users) {
-                    var employeeVM = new EmployeeVM { 
-                        Id = user.Id,
-                        //Image
-                        FullName = user.FirstName + " " + user.LastName,
-                        
-
-                    };
-                    usersToReturn.Add(employeeVM);
-                }
-                //var usersToReturn = _mapper.Map<EmployeeVM[]>(users);
-                return users;
-            } catch(Exception ex)
+            }
+            catch (Exception)
             {
                 return null;
             }
@@ -78,18 +72,40 @@ namespace HumanResourceManagementSystem.Services
 
         public async Task<Response> CreateEmployee([FromBody] HRMSUserVm userVm)
         {
-            //var response = new Response();
             var userExists = await _userManager.FindByNameAsync(userVm.Username);
             if (userExists != null)
             {
-                _response.Status = "Error";
-                _response.Message = "Username already Exists!!!";
-                return _response;
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Username already exists!"
+                };
             }
 
+            var position = await _employeeService.GetPositionByName(userVm.PositionName);
+            var department = await _employeeService.GetDepartmentByName(userVm.DepartmentName);
 
-            HRMSUser user = new()
+            if (position == null)
             {
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Position not found!"
+                };
+            }
+
+            if(department == null)
+            {
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Department not found!"
+                };
+            }
+
+            var user = new HRMSUser
+            {
+                Image = userVm.Image,
                 UserName = userVm.Username,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Email = userVm.Email,
@@ -97,15 +113,87 @@ namespace HumanResourceManagementSystem.Services
                 MiddleName = userVm.MiddleName,
                 LastName = userVm.LastName,
                 ExtentName = userVm.ExtentName,
+                PhoneNumber = userVm.PhoneNumber,
                 Gender = userVm.Gender,
                 BirthDate = userVm.BirthDate,
-                BuildingNo = userVm.BuildingNo,
-                Street = userVm.Street,
-                UnitNo = userVm.UnitNo,
-                Barangay = userVm.Barangay,
-                CityMun = userVm.CityMun,
-                Province = userVm.Province,
-                ZipCode = userVm.ZipCode
+                PlaceBirth = userVm.PlaceBirth,
+                BloodType = userVm.BloodType,
+                Height = userVm.Height,
+                Weight = userVm.Weight,
+                Citizenship = userVm.Citizenship,
+                CivilStatus = userVm.CivilStatus,
+                Religion = userVm.Religion,
+                Ethnicity = userVm.Ethnicity,
+                TribalAffiliation = userVm.TribalAffiliation,
+
+                PresentAddress = userVm.PresentAddress,
+                PresentCityMun = userVm.PresentCityMun,
+                PresentProvince = userVm.PresentProvince,
+                PresentZip = userVm.PresentZip,
+
+                PermanentAddress = userVm.PermanentAddress,
+                PermanentCityMun = userVm.PermanentCityMun,
+                PermanentProvince = userVm.PermanentProvince,
+                PermanentZip = userVm.PermanentZip,
+
+
+
+                DateHired = userVm.DateHired,
+                NationalIDNo = userVm.NationalIDNo,
+                TINNo = userVm.TINNo,
+                SSSNo = userVm.SSSNo,
+                PagibigNo = userVm.PagibigNo,
+                PhilHealthNo = userVm.PhilHealthNo,
+                SpouseFullName = userVm.SpouseFullName,
+                SpouseContactNo = userVm.SpouseContactNo,
+                SpouseOccupation = userVm.SpouseOccupation,
+                SpouseCompanyName = userVm.SpouseCompanyName,
+                SpouseCompanyAdd = userVm.SpouseCompanyAdd,
+
+                FatherName = userVm.FatherName,
+                FatherOccupation = userVm.FatherOccupation,
+                MotherName = userVm.MotherName,
+                MotherOccupation = userVm.MotherOccupation,
+
+                GovLicensureExam = userVm.GovLicensureExam,
+                DateExam = userVm.DateExam,
+                Rating = userVm.Rating,
+                RegNo = userVm.RegNo,
+                PlaceofExam = userVm.PlaceofExam,
+                DateRegitered = userVm.DateRegitered,
+                Validity = userVm.Validity,
+                Remarks = userVm.Remarks,
+
+                PrimarySchool = userVm.PrimarySchool,
+                PrimaryAcademicHonor = userVm.PrimaryAcademicHonor,
+                PrimaryYearGraduated = userVm.PrimaryYearGraduated,
+
+                SecondarySchool = userVm.SecondarySchool,
+                SecondaryAcademicHonor = userVm.SecondaryAcademicHonor,
+                SecondaryYearGraduated = userVm.SecondaryYearGraduated,
+
+                TertiarySchool = userVm.TertiarySchool,
+                TertiaryAcademicHonor = userVm.TertiaryAcademicHonor,
+                DegreeEarned = userVm.DegreeEarned,
+                Major = userVm.Major,
+                TertiaryYearGraduated = userVm.TertiaryYearGraduated,
+
+                MastersSchool = userVm.MastersSchool,
+                MastersAcademicHonor = userVm.MastersAcademicHonor,
+                MastersDegreeEarned = userVm.MastersDegreeEarned,
+                MastersMajor = userVm.MastersMajor,
+                MastersYearGraduated = userVm.MastersYearGraduated,
+
+                PhdSchool = userVm.PhdSchool,
+                PhdAcademicHonor = userVm.PhdAcademicHonor,
+                PhdDegreeEarned = userVm.PhdDegreeEarned,
+                PhdMajor = userVm.PhdMajor,
+                PhdYearGraduated = userVm.PhdYearGraduated,
+
+                Positions = position,
+                Departments = department,
+                EmployeeNumber = userVm.EmployeeNumber,
+                TimeStamp = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, userVm.Password);
@@ -119,27 +207,50 @@ namespace HumanResourceManagementSystem.Services
                     await _roleManager.CreateAsync(userRole);
                 }
 
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
-
-                _response.Status = "Success";
-                _response.Message = "Employee Account created Successfully!!!";
+                return new Response
+                {
+                    Status = "Success",
+                    Message = "Employee account created successfully!"
+                };
             }
-            else
+
+            return new Response
             {
-                _response.Status = "Error";
-                _response.Message = "Employee Account creation failed!.";
-            }
-
-            return _response;
-            
+                Status = "Error",
+                Message = "Employee account creation failed!"
+            };
         }
 
+
         public async Task<Response> CreateEmployeeAccount(
-            string username, string password, string email,
+            string image, string username, string password, string email,
             string lastName, string firstName, string middleName,
-            string extentName, string gender, DateTime birthDate,
-            string buildingNo, string street, string unitNo,
-            string barangay, string cityMun, string province, string zipCode)
+            string extentName, string phoneNumber, string gender, DateTime birthDate,
+            string placeBirth, string bloodType, string height,
+            string weight, string citizenship, string civilStatus,
+            string religion, string ethnicity, string tribalAffiliation,
+            string presentAddress, string presentCityMun, string presentProvince, string presentZip,
+            string permanentAddress, string permanentCityMun, string permanentProvince, string permanentZip,
+            DateTime dateHired, string nationalIDNo, string tinNo,
+            string sssNo, string pagibigNo, string philHealthNo,
+            string spouseFullName, string spouseContactNo, string spouseOccupation,
+            string spouseCompanyName, string spouseCompanyAdd,
+            string fatherName, string fatherOccupation,
+            string motherName, string motherOccupation,
+            string govLicensureExam, DateTime dateExam, string rating,
+            string regNo, string placeOfExam, DateTime dateRegistered,
+            DateTime validity, string remarks,
+            string primarySchool, string primaryAcademicHonor, string primaryYearGraduated,
+            string secondarySchool, string secondaryAcademicHonor, string secondaryYearGraduated,
+            string tertiarySchool, string tertiaryAcademicHonor, string degreeEarned,
+            string major, string tertiaryYearGraduated,
+            string mastersSchool, string mastersAcademicHonor, string mastersDegreeEarned,
+            string mastersMajor, string mastersYearGraduated,
+            string phdSchool, string phdAcademicHonor, string phdDegreeEarned,
+            string phdMajor, string phdYearGraduated,
+            string employeeNumber,
+            Positions positions, Departments departments,
+            DateTime timeStamp)
         {
             //var response = new Response();
             var userExists = await _userManager.FindByNameAsync(username);
@@ -153,6 +264,7 @@ namespace HumanResourceManagementSystem.Services
 
             HRMSUser user = new()
             {
+                Image = image,
                 UserName = username,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Email = email,
@@ -160,15 +272,75 @@ namespace HumanResourceManagementSystem.Services
                 MiddleName = middleName,
                 LastName = lastName,
                 ExtentName = extentName,
+                PhoneNumber = phoneNumber,
                 Gender = gender,
                 BirthDate = birthDate,
-                BuildingNo = buildingNo,
-                Street = street,
-                UnitNo = unitNo,
-                Barangay = barangay,
-                CityMun = cityMun,
-                Province = province,
-                ZipCode = zipCode
+                PlaceBirth = placeBirth,
+                BloodType = bloodType,
+                Height = height,
+                Weight = weight,
+                Citizenship = citizenship,
+                CivilStatus = civilStatus,
+                Religion = religion,
+                Ethnicity = ethnicity,
+                TribalAffiliation = tribalAffiliation,
+                PresentAddress = presentAddress,
+                PresentCityMun = presentCityMun,
+                PresentProvince = presentProvince,
+                PresentZip = presentZip,
+                PermanentAddress = permanentAddress,
+                PermanentCityMun = permanentCityMun,
+                PermanentProvince = permanentProvince,
+                PermanentZip = permanentZip,
+                DateHired = dateHired,
+                NationalIDNo = nationalIDNo,
+                TINNo = tinNo,
+                SSSNo = sssNo,
+                PagibigNo = pagibigNo,
+                PhilHealthNo = philHealthNo,
+                SpouseFullName = spouseFullName,
+                SpouseContactNo = spouseContactNo,
+                SpouseOccupation = spouseOccupation,
+                SpouseCompanyName = spouseCompanyName,
+                SpouseCompanyAdd = spouseCompanyAdd,
+                FatherName = fatherName,
+                FatherOccupation = fatherOccupation,
+                MotherName = motherName,
+                MotherOccupation = motherOccupation,
+                GovLicensureExam = govLicensureExam,
+                DateExam = dateExam,
+                Rating = rating,
+                RegNo = regNo,
+                PlaceofExam = placeOfExam,
+                DateRegitered = dateRegistered,
+                Validity = validity,
+                Remarks = remarks,
+                PrimarySchool = primarySchool,
+                PrimaryAcademicHonor = primaryAcademicHonor,
+                PrimaryYearGraduated = primaryYearGraduated,
+                SecondarySchool = secondarySchool,
+                SecondaryAcademicHonor = secondaryAcademicHonor,
+                SecondaryYearGraduated = secondaryYearGraduated,
+                TertiarySchool = tertiarySchool,
+                TertiaryAcademicHonor = tertiaryAcademicHonor,
+                DegreeEarned = degreeEarned,
+                Major = major,
+                TertiaryYearGraduated = tertiaryYearGraduated,
+                MastersSchool = mastersSchool,
+                MastersAcademicHonor = mastersAcademicHonor,
+                MastersDegreeEarned = mastersDegreeEarned,
+                MastersMajor = mastersMajor,
+                MastersYearGraduated = mastersYearGraduated,
+                PhdSchool = phdSchool,
+                PhdAcademicHonor = phdAcademicHonor,
+                PhdDegreeEarned = phdDegreeEarned,
+                PhdMajor = phdMajor,
+                PhdYearGraduated = phdYearGraduated,
+
+                EmployeeNumber = employeeNumber,
+                Positions = positions,
+                Departments = departments,
+                TimeStamp = timeStamp
             };
 
             var result = await _userManager.CreateAsync(user, password);
@@ -199,14 +371,37 @@ namespace HumanResourceManagementSystem.Services
 
 
         public async Task<Response> CreateAdminAccount(
-            string username, string password,string email,
+            string image, string username, string password, string email,
             string lastName, string firstName, string middleName,
-            string extentName, string gender, DateTime birthDate,
-            string buildingNo, string street, string unitNo,
-            string barangay, string cityMun,string province, string zipCode )
+            string extentName, string phoneNumber, string gender, DateTime birthDate,
+            string placeBirth, string bloodType, string height,
+            string weight, string citizenship, string civilStatus,
+            string religion, string ethnicity, string tribalAffiliation,
+            string presentAddress, string presentCityMun, string presentProvince, string presentZip,
+            string permanentAddress, string permanentCityMun, string permanentProvince, string permanentZip,
+            DateTime dateHired, string nationalIDNo, string tinNo,
+            string sssNo, string pagibigNo, string philHealthNo,
+            string spouseFullName, string spouseContactNo, string spouseOccupation,
+            string spouseCompanyName, string spouseCompanyAdd,
+            string fatherName, string fatherOccupation,
+            string motherName, string motherOccupation,
+            string govLicensureExam, DateTime dateExam, string rating,
+            string regNo, string placeOfExam, DateTime dateRegistered,
+            DateTime validity, string remarks,
+            string primarySchool, string primaryAcademicHonor, string primaryYearGraduated,
+            string secondarySchool, string secondaryAcademicHonor, string secondaryYearGraduated,
+            string tertiarySchool, string tertiaryAcademicHonor, string degreeEarned,
+            string major, string tertiaryYearGraduated,
+            string mastersSchool, string mastersAcademicHonor, string mastersDegreeEarned,
+            string mastersMajor, string mastersYearGraduated,
+            string phdSchool, string phdAcademicHonor, string phdDegreeEarned,
+            string phdMajor, string phdYearGraduated,
+            string employeeNumber,
+            Positions positions, Departments departments,
+            DateTime timeStamp)
         {
             var userExists = await _userManager.FindByNameAsync(username);
-            if(userExists != null)
+            if (userExists != null)
             {
                 _response.Status = "Error";
                 _response.Message = "Username already Exists!!!";
@@ -215,6 +410,7 @@ namespace HumanResourceManagementSystem.Services
 
             HRMSUser user = new()
             {
+                Image = image,
                 UserName = username,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Email = email,
@@ -222,15 +418,75 @@ namespace HumanResourceManagementSystem.Services
                 MiddleName = middleName,
                 LastName = lastName,
                 ExtentName = extentName,
+                PhoneNumber = phoneNumber,
                 Gender = gender,
                 BirthDate = birthDate,
-                BuildingNo = buildingNo,
-                Street = street,
-                UnitNo = unitNo,
-                Barangay = barangay,
-                CityMun = cityMun,
-                Province = province,
-                ZipCode = zipCode
+                PlaceBirth = placeBirth,
+                BloodType = bloodType,
+                Height = height,
+                Weight = weight,
+                Citizenship = citizenship,
+                CivilStatus = civilStatus,
+                Religion = religion,
+                Ethnicity = ethnicity,
+                TribalAffiliation = tribalAffiliation,
+                PresentAddress = presentAddress,
+                PresentCityMun = presentCityMun,
+                PresentProvince = presentProvince,
+                PresentZip = presentZip,
+                PermanentAddress = permanentAddress,
+                PermanentCityMun = permanentCityMun,
+                PermanentProvince = permanentProvince,
+                PermanentZip = permanentZip,
+                DateHired = dateHired,
+                NationalIDNo = nationalIDNo,
+                TINNo = tinNo,
+                SSSNo = sssNo,
+                PagibigNo = pagibigNo,
+                PhilHealthNo = philHealthNo,
+                SpouseFullName = spouseFullName,
+                SpouseContactNo = spouseContactNo,
+                SpouseOccupation = spouseOccupation,
+                SpouseCompanyName = spouseCompanyName,
+                SpouseCompanyAdd = spouseCompanyAdd,
+                FatherName = fatherName,
+                FatherOccupation = fatherOccupation,
+                MotherName = motherName,
+                MotherOccupation = motherOccupation,
+                GovLicensureExam = govLicensureExam,
+                DateExam = dateExam,
+                Rating = rating,
+                RegNo = regNo,
+                PlaceofExam = placeOfExam,
+                DateRegitered = dateRegistered,
+                Validity = validity,
+                Remarks = remarks,
+                PrimarySchool = primarySchool,
+                PrimaryAcademicHonor = primaryAcademicHonor,
+                PrimaryYearGraduated = primaryYearGraduated,
+                SecondarySchool = secondarySchool,
+                SecondaryAcademicHonor = secondaryAcademicHonor,
+                SecondaryYearGraduated = secondaryYearGraduated,
+                TertiarySchool = tertiarySchool,
+                TertiaryAcademicHonor = tertiaryAcademicHonor,
+                DegreeEarned = degreeEarned,
+                Major = major,
+                TertiaryYearGraduated = tertiaryYearGraduated,
+                MastersSchool = mastersSchool,
+                MastersAcademicHonor = mastersAcademicHonor,
+                MastersDegreeEarned = mastersDegreeEarned,
+                MastersMajor = mastersMajor,
+                MastersYearGraduated = mastersYearGraduated,
+                PhdSchool = phdSchool,
+                PhdAcademicHonor = phdAcademicHonor,
+                PhdDegreeEarned = phdDegreeEarned,
+                PhdMajor = phdMajor,
+                PhdYearGraduated = phdYearGraduated,
+
+                EmployeeNumber = employeeNumber,
+                Positions = positions,
+                Departments = departments,
+                TimeStamp = timeStamp
             };
 
             var result = await _userManager.CreateAsync(user, password);
@@ -238,7 +494,7 @@ namespace HumanResourceManagementSystem.Services
             if (result.Succeeded)
             {
                 var adminRoleExists = await _roleManager.RoleExistsAsync(UserRoles.Admin);
-                if(!adminRoleExists)
+                if (!adminRoleExists)
                 {
                     var admineRole = new IdentityRole(UserRoles.Admin);
                     await _roleManager.CreateAsync(admineRole);
@@ -255,17 +511,6 @@ namespace HumanResourceManagementSystem.Services
                 _response.Message = "Admin creation failed!.";
                 return _response;
             }
-
-            //if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            //    await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            //if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-            //    await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-            //if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            //{
-            //    await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-            //}
-
             return _response;
         }
 
@@ -328,47 +573,361 @@ namespace HumanResourceManagementSystem.Services
 
             return token;
         }
-        
+
         public async Task InitializeAdmin()
         {
+            //await CreateAdminAccount(
+            //    "hrmsadmin",
+            //    "asdqwe!123",
+            //    "hrmsadmin@example.com",
+            //    "FirstName",
+            //    " ",
+            //    " ",
+            //    " ",
+            //    " ",
+            //    DateTime.Parse("2023-06-06T23:54:07.790Z"),
+            //    " ",
+            //    " ",
+            //    " ",
+            //    " ",
+            //    " ",
+            //    " ",
+            //    " ");
+
+            string username = "hrmsadmin";
+            string password = "asdqwe!123";
+            string email = "hrmsadmin@example.com";
+
+            // Dummy values for the remaining parameters
+            string image = " ";
+            string lastName = " ";
+            string firstName = " ";
+            string middleName = " ";
+            string extentName = " ";
+            string phoneNumber = " ";
+            string gender = " ";
+            DateTime birthDate = DateTime.Now;
+            string placeBirth = " ";
+            string bloodType = " ";
+            string height = " ";
+            string weight = " ";
+            string citizenship = " ";
+            string civilStatus = " ";
+            string religion = " ";
+            string ethnicity = " ";
+            string tribalAffiliation = " ";
+            string presentAddress = " ";
+            string presentCityMun = " ";
+            string presentProvince = " ";
+            string presentZip = " ";
+            string permanentAddress = " ";
+            string permanentCityMun = " ";
+            string permanentProvine = " ";  
+            string permanentZip = " ";
+            DateTime dateHired = DateTime.Now;
+            string nationalIDNo = " ";
+            string tinNo = " ";
+            string sssNo = " ";
+            string pagibigNo = " ";
+            string philHealthNo = " ";
+            string spouseFullName = " ";
+            string spouseContactNo = " ";
+            string spouseOccupation = " ";
+            string spouseCompanyName = " ";
+            string spouseCompanyAdd = " ";
+            string fatherName = " ";
+            string fatherOccupation = " ";
+            string motherName = " ";
+            string motherOccupation = " ";
+            string govLicensureExam = " ";
+            DateTime dateExam = DateTime.Now;
+            string rating = " ";
+            string regNo = " ";
+            string placeOfExam = " ";
+            DateTime dateRegistered = DateTime.Now;
+            DateTime validity = DateTime.Now;
+            string remarks = "  ";
+            string primarySchool = " ";
+            string primaryAcademicHonor = " ";
+            string primaryYearGraduated = " ";
+            string secondarySchool = " ";
+            string secondaryAcademicHonor = " ";
+            string secondaryYearGraduated = " ";
+            string tertiarySchool = " ";
+            string tertiaryAcademicHonor = " ";
+            string degreeEarned = " ";
+            string major = " ";
+            string tertiaryYearGraduated = " ";
+            string mastersSchool = " ";
+            string mastersAcademicHonor = " ";
+            string mastersDegreeEarned = " ";
+            string mastersMajor = " ";
+            string mastersYearGraduated = " ";
+            string phdSchool = " ";
+            string phdAcademicHonor = " ";
+            string phdDegreeEarned = " ";
+            string phdMajor = " ";
+            string phdYearGraduated = " ";
+            string employeeNumber = " ";
+            Positions positions = new Positions();
+            Departments departments = new Departments();
+            DateTime timeStamp = DateTime.Now;
+
             await CreateAdminAccount(
-                "hrmsadmin",
-                "asdqwe!123",
-                "hrmsadmin@example.com", 
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                DateTime.Parse("2023-06-06T23:54:07.790Z"),
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ");
+                image,
+                username, 
+                password, 
+                email, 
+                lastName, 
+                firstName, 
+                middleName, 
+                extentName,
+                phoneNumber,
+                gender, 
+                birthDate, 
+                placeBirth,
+                bloodType, 
+                height, 
+                weight, 
+                citizenship, 
+                civilStatus, 
+                religion, 
+                ethnicity, 
+                tribalAffiliation, 
+                presentAddress,
+                presentCityMun,
+                presentProvince,
+                presentZip, 
+                permanentAddress, 
+                permanentCityMun,
+                permanentProvine,
+                permanentZip, 
+                dateHired, 
+                nationalIDNo, 
+                tinNo,
+                sssNo,
+                pagibigNo, 
+                philHealthNo, 
+                spouseFullName, 
+                spouseContactNo, 
+                spouseOccupation, 
+                spouseCompanyName, 
+                spouseCompanyAdd,
+                fatherName, 
+                fatherOccupation, 
+                motherName, 
+                motherOccupation,
+                govLicensureExam, 
+                dateExam, 
+                rating, 
+                regNo, 
+                placeOfExam,
+                dateRegistered, 
+                validity, 
+                remarks, 
+                primarySchool, 
+                primaryAcademicHonor, 
+                primaryYearGraduated, 
+                secondarySchool,
+                secondaryAcademicHonor, 
+                secondaryYearGraduated,
+                tertiarySchool, 
+                tertiaryAcademicHonor, 
+                degreeEarned, 
+                major,
+                tertiaryYearGraduated, 
+                mastersSchool, 
+                mastersAcademicHonor, 
+                mastersDegreeEarned, 
+                mastersMajor, 
+                mastersYearGraduated,
+                phdSchool, 
+                phdAcademicHonor, 
+                phdDegreeEarned, 
+                phdMajor,
+                employeeNumber,
+                phdYearGraduated, 
+                positions, 
+                departments, 
+                timeStamp);
         }
 
         public async Task InitializeEmployee()
         {
-            await CreateAdminAccount(
-               "hrmsemployee",
-               "asdqwe!123",
-               "hrmsemployee@example.com",
-               " ",
-               " ",
-               " ",
-               " ",
-               " ",
-               DateTime.Parse("2023-06-06T23:54:07.790Z"),
-               " ",
-               " ",
-               " ",
-               " ",
-               " ",
-               " ",
-               " ");
+            //await CreateAdminAccount(
+            //   "hrmsemployee",
+            //   "asdqwe!123",
+            //   "hrmsemployee@example.com",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   DateTime.Parse("2023-06-06T23:54:07.790Z"),
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ",
+            //   " ");
+
+            string username = "hrmsemployee";
+            string password = "asdqwe!123";
+            string email = "hrmsemployee@example.com";
+
+            // Dummy values for the remaining parameters
+            string image = " ";
+            string lastName = " ";
+            string firstName = " ";
+            string middleName = " ";
+            string extentName = " ";
+            string phoneNumber = " ";
+            string gender = " ";
+            DateTime birthDate = DateTime.Now;
+            string placeBirth = " ";
+            string bloodType = " ";
+            string height = " ";
+            string weight = " ";
+            string citizenship = " ";
+            string civilStatus = " ";
+            string religion = " ";
+            string ethnicity = " ";
+            string tribalAffiliation = " ";
+            string presentAddress = " ";
+            string presentCityMun = " ";
+            string presentProvince = " ";
+            string presentZip = " ";
+            string permanentAddress = " ";
+            string permanentCityMun = " ";
+            string permanentProvince = " ";
+            string permanentZip = " ";
+            DateTime dateHired = DateTime.Now;
+            string nationalIDNo = " ";
+            string tinNo = " ";
+            string sssNo = " ";
+            string pagibigNo = " ";
+            string philHealthNo = " ";
+            string spouseFullName = " ";
+            string spouseContactNo = " ";
+            string spouseOccupation = " ";
+            string spouseCompanyName = " ";
+            string spouseCompanyAdd = " ";
+            string fatherName = " ";
+            string fatherOccupation = " ";
+            string motherName = " ";
+            string motherOccupation = " ";
+            string govLicensureExam = " ";
+            DateTime dateExam = DateTime.Now;
+            string rating = " ";
+            string regNo = " ";
+            string placeOfExam = " ";
+            DateTime dateRegistered = DateTime.Now;
+            DateTime validity = DateTime.Now;
+            string remarks = "  ";
+            string primarySchool = " ";
+            string primaryAcademicHonor = " ";
+            string primaryYearGraduated = " ";
+            string secondarySchool = " ";
+            string secondaryAcademicHonor = " ";
+            string secondaryYearGraduated = " ";
+            string tertiarySchool = " ";
+            string tertiaryAcademicHonor = " ";
+            string degreeEarned = " ";
+            string major = " ";
+            string tertiaryYearGraduated = " ";
+            string mastersSchool = " ";
+            string mastersAcademicHonor = " ";
+            string mastersDegreeEarned = " ";
+            string mastersMajor = " ";
+            string mastersYearGraduated = " ";
+            string phdSchool = " ";
+            string phdAcademicHonor = " ";
+            string phdDegreeEarned = " ";
+            string phdMajor = " ";
+            string phdYearGraduated = " ";
+            string employeeNumber = " ";
+            Positions positions = new Positions();
+            Departments departments = new Departments();
+            DateTime timeStamp = DateTime.Now;
+
+            await CreateEmployeeAccount(
+                image,
+                username,
+                password,
+                email,
+                lastName,
+                firstName,
+                middleName,
+                extentName,
+                phoneNumber,
+                gender,
+                birthDate,
+                placeBirth,
+                bloodType,
+                height,
+                weight,
+                citizenship,
+                civilStatus,
+                religion,
+                ethnicity,
+                tribalAffiliation,
+                presentAddress,
+                presentCityMun,
+                presentProvince,
+                presentZip,
+                permanentAddress,
+                permanentCityMun,
+                permanentProvince,
+                permanentZip,
+                dateHired,
+                nationalIDNo,
+                tinNo,
+                sssNo,
+                pagibigNo,
+                philHealthNo,
+                spouseFullName,
+                spouseContactNo,
+                spouseOccupation,
+                spouseCompanyName,
+                spouseCompanyAdd,
+                fatherName,
+                fatherOccupation,
+                motherName,
+                motherOccupation,
+                govLicensureExam,
+                dateExam,
+                rating,
+                regNo,
+                placeOfExam,
+                dateRegistered,
+                validity,
+                remarks,
+                primarySchool,
+                primaryAcademicHonor,
+                primaryYearGraduated,
+                secondarySchool,
+                secondaryAcademicHonor,
+                secondaryYearGraduated,
+                tertiarySchool,
+                tertiaryAcademicHonor,
+                degreeEarned,
+                major,
+                tertiaryYearGraduated,
+                mastersSchool,
+                mastersAcademicHonor,
+                mastersDegreeEarned,
+                mastersMajor,
+                mastersYearGraduated,
+                phdSchool,
+                phdAcademicHonor,
+                phdDegreeEarned,
+                phdMajor,
+                phdYearGraduated,
+                employeeNumber,
+                positions,
+                departments,
+                timeStamp);
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using HumanResourceManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HumanResourceManagementSystem.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230615072435_departmentemployee")]
+    partial class departmentemployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
@@ -39,32 +41,20 @@ namespace HumanResourceManagementSystem.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Barangay")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BloodType")
+                    b.Property<string>("BuildingNo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Citizenship")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CivilStatus")
+                    b.Property<string>("CityMun")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateExam")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateHired")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateRegitered")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DegreeEarned")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("DepartmentsId")
@@ -77,34 +67,13 @@ namespace HumanResourceManagementSystem.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("EmployeeNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Ethnicity")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ExtentName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FatherName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FatherOccupation")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GovLicensureExam")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Height")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
@@ -116,34 +85,7 @@ namespace HumanResourceManagementSystem.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Major")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MastersAcademicHonor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MastersDegreeEarned")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MastersMajor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MastersSchool")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MastersYearGraduated")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("MiddleName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MotherName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MotherOccupation")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NationalIDNo")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -154,40 +96,7 @@ namespace HumanResourceManagementSystem.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PagibigNo")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PermanentAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PermanentCityMun")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PermanentProvince")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PermanentZip")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhdAcademicHonor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhdDegreeEarned")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhdMajor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhdSchool")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhdYearGraduated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhilHealthNo")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
@@ -196,107 +105,29 @@ namespace HumanResourceManagementSystem.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PlaceBirth")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PlaceofExam")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("PositionsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PresentAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PresentCityMun")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PresentProvince")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PresentZip")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PrimaryAcademicHonor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PrimarySchool")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PrimaryYearGraduated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Rating")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RegNo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Religion")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SSSNo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SecondaryAcademicHonor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SecondarySchool")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SecondaryYearGraduated")
+                    b.Property<string>("Province")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("SpouseCompanyAdd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpouseCompanyName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpouseContactNo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpouseFullName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpouseOccupation")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TINNo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TertiaryAcademicHonor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TertiarySchool")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TertiaryYearGraduated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TribalAffiliation")
+                    b.Property<string>("Street")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("UnitNo")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Validity")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Weight")
+                    b.Property<string>("ZipCode")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

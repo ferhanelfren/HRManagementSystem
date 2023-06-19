@@ -14,6 +14,7 @@ ConfigurationManager configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 
 builder.Services.AddCors();
@@ -26,6 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<AccountService>();
+builder.Services.AddTransient<EmployeeService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
@@ -101,6 +104,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
 
 
