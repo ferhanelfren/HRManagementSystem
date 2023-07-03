@@ -1,0 +1,81 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="'Add Department'" [items]="['Department']" [active_item]="'Add Department'">
+      </app-breadcrumb>
+    </div>
+    <div class="row parent-div">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card child-div">
+          <div class="body">
+            <form [formGroup]="saveDev!">
+              <div class="row">
+                <div class="col">
+                  <h3 class="mt-2">Department</h3>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field class="example-full-width " appearance="outline">
+                        <mat-label>Department Name</mat-label>
+                        <input matInput [(ngModel)]="departmentModel.departmentName" formControlName="departmentModel">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <button class="btn-space"
+                        [disabled]="!saveDev?.valid"
+                        (click)="onSave()"
+                        mat-raised-button color="primary">
+                        {{ isTableClicked ? 'Update' : 'Submit' }}
+                      </button>
+                      <button type="button" mat-raised-button color="warn">
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="parent-div">
+                    <mat-form-field class="example-full-width mt-5" appearance="outline">
+                      <mat-label>Search Here. . .</mat-label>
+                      <input matInput [(ngModel)]="departmentNameFilter" formControlName="departmentNameFilter" (keyup)="searchDeparment()">
+                    </mat-form-field>
+                    <div class="table-container">
+                      <table class="table table-hover table-adjustable">
+                        <thead>
+                          <tr>
+                            <th>Department Name</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let department of departmentsNameVM &&  getPageItems()">
+                            <tr (click)="onClickData(department)">
+                              <td>{{ department.departmentName }}</td>
+                              <td>
+                                <button mat-button
+                                class="tblActnBtn h-auto delete-button"
+                                (click)="onDelete()">
+                                  <i class="material-icons">delete</i>
+                                </button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                    <mat-paginator class="paginator-position" [length]="departmentsNameVM?.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                    (page)="onPageChange($event)">
+                    </mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

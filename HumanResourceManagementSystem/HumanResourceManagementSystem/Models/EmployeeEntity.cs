@@ -26,7 +26,7 @@
         public ICollection<EmployeeSkillEntity> EmployeeSkills { get; set; }
         //workexperience
         public ICollection<EmployeeWorkExperienceEntity> EmployeeWorkExperiences { get; set; }
-        public PositionEntity PositionEntity { get; set; }
+        public Image PositionEntity { get; set; }
         public DepartmentEntity DepartmentEntity { get; set; }
         //this status is PartTime / FullTime
         public string EmployeeStatus { get; set; }

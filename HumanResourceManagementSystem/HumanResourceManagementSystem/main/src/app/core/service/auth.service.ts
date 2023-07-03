@@ -2,10 +2,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, take} from 'rxjs/operators';
 import { User } from '../models/user';
-import { LoginVM, AuthenticationClient} from 'src/app/swagger-generated-hrms';
+import { EmployeeModel } from '../models/employeeModel';
 import { environment } from 'src/environments/environment.development';
+import { AccountClient, FileResponse, LoginVM } from 'src/app/hrms-swagger';
+
 
 
 @Injectable({
@@ -20,7 +22,7 @@ export class AuthService {
 
   baseURL = 'https://localhost:5001/api/';
 
-  constructor(private http: HttpClient,private authClient: AuthenticationClient) {
+  constructor(private http: HttpClient,private accountClient: AccountClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser') || '{}')
     );
@@ -63,7 +65,7 @@ export class AuthService {
 
   login(model: LoginVM) {
     return this.http
-      .post<User>(`${environment.apiUrl}api/Authentication/login`, model)
+      .post<User>(`${environment.apiUrl}api/Account/login`, model)
       .pipe(
         map((user) => {
           //console.log(user);
@@ -87,14 +89,120 @@ export class AuthService {
     return of({ success: false });
   }
 
-  register(model: LoginVM) {
-    return this.http.post<User>(this.baseURL + 'Authentication/register', model).pipe(
-      map(user => {
-        if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-        }
-        return user;
-      })
-    )
+  // register(model: LoginVM) {
+  //   return this.http.post<User>(this.baseURL + 'Account/register', model).pipe(
+  //     map(user => {
+  //       if(user){
+  //         localStorage.setItem('user', JSON.stringify(user));
+  //       }
+  //       return user;
+  //     })
+  //   )
+  // }
+
+  // registerEmployee(
+  //   employeesVM: HRMSUserVm,
+  //   positionName: string,
+  //   departmentName:string,
+  //   file: File){
+
+  //         employeesVM.positionName = positionName;
+  //         employeesVM.departmentName = departmentName;
+  //         employeesVM.image = file;
+
+  //         return this.accountClient.createEmployee(employeesVM).pipe(take(1));
+  // }
+
+  getEmployeeList(userNameFilter: string): Observable<FileResponse | null> {
+    return this.accountClient.getEmployees(userNameFilter).pipe(take(1));
   }
+
+
+
+  registerEmployee(employeeModel: EmployeeModel) {
+    return this.accountClient.createEmployee(
+      employeeModel.imageFile,
+      employeeModel.username,
+      employeeModel.password,
+      employeeModel.email,
+      employeeModel.lastName,
+      employeeModel.firstName,
+      employeeModel.middleName,
+      employeeModel.extentName,
+      employeeModel.phoneNumber,
+      employeeModel.gender,
+      employeeModel.birthDate,
+      employeeModel.placeBirth,
+      employeeModel.bloodType,
+      employeeModel.height,
+      employeeModel.weight,
+      employeeModel.citizenship,
+      employeeModel.civilStatus,
+      employeeModel.religion,
+      employeeModel.ethnicity,
+      employeeModel.tribalAffiliation,
+      employeeModel.presentAddress,
+      employeeModel.presentCityMun,
+      employeeModel.presentProvince,
+      employeeModel.presentZip,
+      employeeModel.permanentAddress,
+      employeeModel.permanentCityMun,
+      employeeModel.permanentProvince,
+      employeeModel.permanentZip,
+      employeeModel.dateHired,
+      employeeModel.nationalIDNo,
+      employeeModel.tINNo,
+      employeeModel.sSSNo,
+      employeeModel.pagibigNo,
+      employeeModel.philHealthNo,
+      employeeModel.spouseFullName,
+      employeeModel.spouseContactNo,
+      employeeModel.spouseOccupation,
+      employeeModel.spouseCompanyName,
+      employeeModel.spouseCompanyAdd,
+      employeeModel.fatherName,
+      employeeModel.fatherOccupation,
+      employeeModel.motherName,
+      employeeModel.motherOccupation,
+      employeeModel.govLicensureExam,
+      employeeModel.dateExam,
+      employeeModel.rating,
+      employeeModel.regNo,
+      employeeModel.placeofExam,
+      employeeModel.dateRegitered,
+      employeeModel.validity,
+      employeeModel.remarks,
+
+      employeeModel.primarySchool,
+      employeeModel.primaryAcademicHonor,
+      employeeModel.primaryYearGraduated,
+      employeeModel.secondarySchool,
+      employeeModel.secondaryAcademicHonor,
+      employeeModel.secondaryYearGraduated,
+      employeeModel.tertiarySchool,
+      employeeModel.tertiaryAcademicHonor,
+      employeeModel.degreeEarned,
+
+
+      employeeModel.major,
+      employeeModel.tertiaryYearGraduated,
+      employeeModel.mastersSchool,
+      employeeModel.mastersAcademicHonor,
+      employeeModel.mastersDegreeEarned,
+      employeeModel.mastersMajor,
+      employeeModel.mastersYearGraduated,
+      employeeModel.phdSchool,
+      employeeModel.phdAcademicHonor,
+      employeeModel.phdDegreeEarned,
+      employeeModel.phdMajor,
+      employeeModel.phdYearGraduated,
+
+      employeeModel.positionName,
+      employeeModel.employeeNumber,
+      employeeModel.departmentName,
+    ).pipe(take(1));
+
+  }
+
+
 }

@@ -43,6 +43,7 @@
     "angular-feather": "^6.5.0",
     "angular-gauge": "^4.0.0",
     "apexcharts": "^3.37.0",
+    "automapper-js": "^1.0.15",
     "bootstrap": "^5.2.3",
     "browser-sync": "^2.27.5",
     "chart.js": "^4.2.1",

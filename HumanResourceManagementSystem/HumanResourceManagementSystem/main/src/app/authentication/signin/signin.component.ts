@@ -11,7 +11,9 @@ import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroy
 
 
 import { Observable } from 'rxjs';
-import { LoginVM} from 'src/app/swagger-generated-hrms';
+import { LoginVM } from 'src/app/hrms-swagger';
+
+
 
 @Component({
   selector: 'app-signin',

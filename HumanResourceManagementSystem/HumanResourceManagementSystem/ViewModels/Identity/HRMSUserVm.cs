@@ -6,10 +6,11 @@ namespace HumanResourceManagementSystem.ViewModels.Identity
 {
     public class HRMSUserVm
     {
-        public string Image { get; set; }
+       
+        public IFormFile ImageFile { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -54,12 +55,12 @@ namespace HumanResourceManagementSystem.ViewModels.Identity
         public string MotherName { get; set; }
         public string MotherOccupation { get; set; }
         public string GovLicensureExam { get; set; }
-        public DateTime DateExam { get; set; }
+        public string DateExam { get; set; }
         public string Rating { get; set; }
         public string RegNo { get; set; }
         public string PlaceofExam { get; set; }
-        public DateTime DateRegitered { get; set; }
-        public DateTime Validity { get; set; }
+        public string DateRegitered { get; set; }
+        public string Validity { get; set; }
         public string Remarks { get; set; }
 
         public string PrimarySchool { get; set; }
@@ -92,6 +93,6 @@ namespace HumanResourceManagementSystem.ViewModels.Identity
         public string EmployeeNumber { get; set; }
         public string DepartmentName { get; set; }
 
-        //public DateTime TimeStamp { get; set; }
+
     }
 }

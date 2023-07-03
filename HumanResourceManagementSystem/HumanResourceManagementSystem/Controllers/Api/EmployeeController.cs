@@ -1,8 +1,8 @@
-﻿using HumanResourceManagementSystem.Data;
-using HumanResourceManagementSystem.Models.Identity;
+﻿using HRManagementSystem_MVC_.Models;
+using HumanResourceManagementSystem.Data;
+using HumanResourceManagementSystem.Models;
 using HumanResourceManagementSystem.Services;
 using HumanResourceManagementSystem.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HumanResourceManagementSystem.Controllers.Api
@@ -21,8 +21,143 @@ namespace HumanResourceManagementSystem.Controllers.Api
             _dataContext = dataContext;
         }
 
-        [HttpPost]
-        [Route("AddPositions")]
+
+        //[HttpPost("AddOrUpdateDepartment")]
+        //public async Task<IActionResult> AddOrUpdateDepartment([FromBody] Departments departments)
+        //{
+        //    var response = await _employeeService.AddOrUpdateDepartments(departments);
+        //    return Ok(response);
+        //}
+
+        [HttpPut("UpdateDepartment/{id}")]
+        public async Task<ActionResult<Response>> UpdateDepartment(int id, [FromBody] Departments departments)
+        {
+            var response = await _employeeService.UpdateDepartment(id, departments);
+            return response;
+        }
+
+        [HttpPut("UpdatePosition/{id}")]
+        public async Task<ActionResult<Response>> UpdatePosition(int id, [FromBody] Positions positions)
+        {
+            var response = await _employeeService.UpdatePosition(id, positions);
+            return response;
+        }
+        
+        [HttpDelete("Department/{departmentId}")]
+        public async Task<IActionResult> DeleteDepartment(int departmentId)
+        {
+            var response = await _employeeService.DeleteDepartment(departmentId);
+            if (response.Status == "Success")
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
+        }
+
+        [HttpDelete("Position/{positionId}")]
+        public async Task<IActionResult> DeletePosition(int positionId)
+        {
+            var response = await _employeeService.DeletePosition(positionId);
+            if (response.Status == "Success")
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
+        }
+
+        [HttpGet("CheckIfDepartmentNameExists")]
+        public async Task<IActionResult> CheckIfDepartmentNameExists(string departmentName)
+        {
+            var exists = await _employeeService.CheckIfDepartmentNameExists(departmentName);
+            if (exists != null)
+            {
+                return Ok("Department name exists.");
+            }
+            else
+            {
+                return NotFound("Department name does not exist.");
+            }
+        }
+
+
+
+        [HttpGet("GetDepartment")]
+        public async Task<IActionResult> GetDepartment(string departmentNameFilter = null)
+        {
+            try
+            {
+                //var departments = await _employeeService.GetDeptList();
+                //if (departments == null)
+                //{
+                //    return BadRequest("Failed to retrieve data.");
+                //}
+                //return Ok(departments);
+
+                var departments = await _employeeService.GetDepartmentList();
+
+                if (!string.IsNullOrEmpty(departmentNameFilter))
+                {
+                    departments = departments.Where(d => d.DepartmentName == departmentNameFilter).ToList();
+                }
+
+                return Ok(departments);
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving departments.");
+            }
+        }
+
+        //[HttpGet("GetDepartmentList")]
+        //public async Task<IActionResult> GetDepartmentList(string departmentNameFilter = null)
+        //{
+        //    try
+        //    {
+        //        var departments = await _employeeService.GetDepartmentList();
+
+        //        if(!string.IsNullOrEmpty(departmentNameFilter))
+        //        {
+        //            departments = departments.Where(d => d.DepartmentName == departmentNameFilter).ToList();
+        //        }
+
+        //        return Ok(departments);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it accordingly
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving departments.");
+        //    }
+        //}
+
+        [HttpGet("GetPositions")]
+        public async Task<ActionResult> GetPositions(string positionNameFilter = null)
+        {
+            try
+            {
+                var positions = await _employeeService.GetPositionList(positionNameFilter);
+                if (positions == null)
+                {
+                    return BadRequest("Failed to retrieve data.");
+                }
+                return Ok(positions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving departments.");
+            }
+        }
+
+
+
+        [HttpPost("AddPositions")]
         public async Task<IActionResult> AddPositions(PositionsVM positionVM)
         {
             var response = await _employeeService.AddPositions(positionVM);
@@ -37,8 +172,7 @@ namespace HumanResourceManagementSystem.Controllers.Api
             }
         }
 
-        [HttpPost]
-        [Route("AddDepartments")]
+        [HttpPost("AddDepartments")]
         public async Task<IActionResult> AddDepartments(DepartmentsVM departmentsVM)
         {
             var response = await _employeeService.AddDepartments(departmentsVM);
@@ -51,6 +185,13 @@ namespace HumanResourceManagementSystem.Controllers.Api
             {
                 return BadRequest(new { response.Message });
             }
+        }
+
+        [HttpPost("UploadImage")]
+        public async Task<IActionResult> UploadImage([FromBody] Image imageModel)
+        {
+            var imagePath = await _employeeService.UploadImage(imageModel);
+            return Ok(imagePath);
         }
 
     }

@@ -22,6 +22,10 @@ import { Direction } from '@angular/cdk/bidi';
 import { TableExportUtil } from 'src/app/shared/tableExportUtil';
 import { TableElement } from 'src/app/shared/TableElement';
 import { formatDate } from '@angular/common';
+import { AuthService } from 'src/app/core/service/auth.service';
+import { FileResponse } from 'src/app/hrms-swagger';
+import { EmployeeModel } from 'src/app/core/models/employeeModel';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-allemployees',
@@ -44,31 +48,41 @@ export class AllemployeesComponent
     'date',
     'actions',
   ];
+  dataSource: MatTableDataSource<EmployeeModel>;
+  fileResponse: FileResponse | null = null;
+  userNameFilter: string;
+  employeesModel: EmployeeModel[] | null = null;
+  employees: EmployeeModel[] | null = null;
+
   exampleDatabase?: EmployeesService;
-  dataSource!: ExampleDataSource;
+  //dataSource!: ExampleDataSource;
   selection = new SelectionModel<Employees>(true, []);
   index?: number;
   id?: number;
-  employees?: Employees;
+  //employees?: Employees;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public employeesService: EmployeesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     super();
+    //this.onLoad();
   }
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   @ViewChild(MatMenuTrigger)
   contextMenu?: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
   ngOnInit() {
-    this.loadData();
+    //this.loadData();
+    this.onLoad();
   }
   refresh() {
-    this.loadData();
+    this.onLoad();
+    //this.loadData();
   }
   addNew() {
     let tempDirection: Direction;
@@ -101,6 +115,82 @@ export class AllemployeesComponent
       }
     });
   }
+
+
+  // onLoad(){
+  //   this.authService.getEmployeeList(this.userNameFilter)..subscribe(
+  //     (fileResponse: FileResponse | null) => {
+  //       if (fileResponse && fileResponse.data) {
+  //         const fileReader = new FileReader();
+  //         fileReader.onload = (event: any) => {
+  //           const jsonData = JSON.parse(event.target.result);
+  //           this.positionsNameVM = jsonData;
+  //           this.paginator.pageIndex = 0; // Reset page index to 0 when new data is loaded
+  //         };
+  //         fileReader.readAsText(fileResponse.data);
+  //       }
+  //     },
+  //     (error: any) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+  onSearch(){
+    this.refresh();
+  }
+
+  // onLoad(){
+  //   this.authService.getEmployeeList(this.userNameFilter).subscribe(
+  //     (response) => {
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         const employeesJson = reader.result as string;
+  //         const employeesArray = JSON.parse(employeesJson);
+  //         this.fileResponse = { ...response, data: employeesArray };
+  //       };
+  //       reader.readAsText(response.data);
+  //       // this.fileResponse = response;
+  //       // console.log(this.fileResponse);
+  //       this.dataSource = new MatTableDataSource(this.employees);
+  //       this.dataSource.paginator = this.paginator;
+  //     },
+  //     (error) => {
+  //       console.error(error);
+  //     }
+  //   );
+  // }
+
+  onEdit(employee: EmployeeModel){
+    console.log(employee);
+  }
+
+  onLoad() {
+    this.authService.getEmployeeList(this.userNameFilter).subscribe(
+      (response) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const employeesJson = reader.result as string;
+          const employeesArray = JSON.parse(employeesJson);
+          this.employees = employeesArray; // Assign employeesArray to the employees variable
+          this.fileResponse = { ...response, data: employeesArray };
+
+          // Set the data source and paginator
+          this.dataSource = new MatTableDataSource(this.employees);
+          this.dataSource.paginator = this.paginator;
+        };
+        reader.readAsText(response.data);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+
+
+
+
   editCall(row: Employees) {
     this.id = row.id;
     let tempDirection: Direction;
@@ -178,69 +268,69 @@ export class AllemployeesComponent
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.renderedData.length;
-    return numSelected === numRows;
+    // const numSelected = this.selection.selected.length;
+    // const numRows = this.dataSource.renderedData.length;
+    // return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.renderedData.forEach((row) =>
-          this.selection.select(row)
-        );
+    // this.isAllSelected()
+    //   ? this.selection.clear()
+    //   : this.dataSource.renderedData.forEach((row) =>
+    //       this.selection.select(row)
+    //     );
   }
   removeSelectedRows() {
     const totalSelect = this.selection.selected.length;
-    this.selection.selected.forEach((item) => {
-      const index: number = this.dataSource.renderedData.findIndex(
-        (d) => d === item
-      );
-      // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
-      this.exampleDatabase?.dataChange.value.splice(index, 1);
+    // this.selection.selected.forEach((item) => {
+    //   const index: number = this.dataSource.renderedData.findIndex(
+    //     (d) => d === item
+    //   );
+    //   // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
+    //   this.exampleDatabase?.dataChange.value.splice(index, 1);
 
-      this.refreshTable();
-      this.selection = new SelectionModel<Employees>(true, []);
-    });
-    this.showNotification(
-      'snackbar-danger',
-      totalSelect + ' Record Delete Successfully...!!!',
-      'bottom',
-      'center'
-    );
+    //   this.refreshTable();
+    //   this.selection = new SelectionModel<Employees>(true, []);
+    // });
+    // this.showNotification(
+    //   'snackbar-danger',
+    //   totalSelect + ' Record Delete Successfully...!!!',
+    //   'bottom',
+    //   'center'
+    // );
   }
-  public loadData() {
-    this.exampleDatabase = new EmployeesService(this.httpClient);
-    this.dataSource = new ExampleDataSource(
-      this.exampleDatabase,
-      this.paginator,
-      this.sort
-    );
-    this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
-      () => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      }
-    );
-  }
+  // public loadData() {
+  //   this.exampleDatabase = new EmployeesService(this.httpClient);
+  //   this.dataSource = new ExampleDataSource(
+  //     this.exampleDatabase,
+  //     this.paginator,
+  //     this.sort
+  //   );
+  //   this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
+  //     () => {
+  //       if (!this.dataSource) {
+  //         return;
+  //       }
+  //       this.dataSource.filter = this.filter.nativeElement.value;
+  //     }
+  //   );
+  // }
   // export table data in excel file
   exportExcel() {
     // key name with space add in brackets
-    const exportData: Partial<TableElement>[] =
-      this.dataSource.filteredData.map((x) => ({
-        Name: x.name,
-        Department: x.department,
-        Role: x.role,
-        'Joining Date': formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '',
-        Degree: x.degree,
-        Mobile: x.mobile,
-        Email: x.email,
-      }));
+    // const exportData: Partial<TableElement>[] =
+    //   this.dataSource.filteredData.map((x) => ({
+    //     Name: x.name,
+    //     Department: x.department,
+    //     Role: x.role,
+    //     'Joining Date': formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '',
+    //     Degree: x.degree,
+    //     Mobile: x.mobile,
+    //     Email: x.email,
+    //   }));
 
-    TableExportUtil.exportToExcel(exportData, 'excel');
+   // TableExportUtil.exportToExcel(exportData, 'excel');
   }
   showNotification(
     colorName: string,
@@ -267,6 +357,21 @@ export class AllemployeesComponent
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export class ExampleDataSource extends DataSource<Employees> {
   filterChange = new BehaviorSubject('');
   get filter(): string {
@@ -284,7 +389,7 @@ export class ExampleDataSource extends DataSource<Employees> {
   ) {
     super();
     // Reset to the first page when the user changes the filter.
-    this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
+    //this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Employees[]> {

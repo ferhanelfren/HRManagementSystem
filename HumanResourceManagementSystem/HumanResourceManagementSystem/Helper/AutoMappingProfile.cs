@@ -11,12 +11,14 @@ namespace HumanResourceManagementSystem.Helper
     {
         public AutoMappingProfile()
         {
-            //CreateMap<HRMSUser, HRMSUserVm>().ReverseMap();
+            CreateMap<HRMSUser, HRMSUserVm>().ReverseMap();
             CreateMap<Positions, string>().ConvertUsing(src => src != null ? src.PositionName : string.Empty);
             CreateMap<HRMSUser, EmployeeVM>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
-                .ForMember(dest => dest.Positions, opt => opt.MapFrom(src => src.Positions)) // Map Positions.PositionName
+
+
+            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.LastName}, {src.FirstName} {src.MiddleName} "))
+                .ForMember(dest => dest.Positions, opt => opt.MapFrom(src => src.Positions))
                 .ForMember(dest => dest.Degree, opt => opt.MapFrom(src => src.DegreeEarned))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))

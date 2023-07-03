@@ -1,0 +1,37 @@
+.parent-div{
+  height: fit-content;
+}
+
+.child-div{
+  height: fit-content;
+}
+
+.btn-width{
+  width: 100px;
+  font-size: 50pt;
+}
+
+
+.parent-div {
+  height: fit-content; /* Set the desired height for the parent div */
+}
+
+.table-container {
+  height: calc(100% - 56px); /* Subtract the height of the paginator */
+}
+
+.table-adjustable {
+  width: 100%;
+}
+
+.paginator-position {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+}
+
+.delete-button {
+  color: #ff5722;
+}
+
+

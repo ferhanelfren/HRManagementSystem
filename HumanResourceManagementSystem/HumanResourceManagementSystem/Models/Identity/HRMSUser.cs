@@ -7,13 +7,13 @@ namespace HumanResourceManagementSystem.Models.Identity
     {
 
         public string Image { get; set; }
-
         //PERSONAL
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string ExtentName { get; set; }
         public string Gender { get; set; }
+
         public DateTime BirthDate { get; set; }
         public string PlaceBirth { get; set; }
         public string BloodType { get; set; }
@@ -39,7 +39,7 @@ namespace HumanResourceManagementSystem.Models.Identity
         public string PagibigNo { get; set; }
         public string PhilHealthNo { get; set; }
 
-        //FAMILY BACKGROUND
+        ////FAMILY BACKGROUND
         public string SpouseFullName { get; set; }
         public string SpouseContactNo { get; set; }
         public string SpouseOccupation { get; set; }
@@ -50,18 +50,18 @@ namespace HumanResourceManagementSystem.Models.Identity
         public string FatherOccupation { get; set; }
         public string MotherName { get; set; }
         public string MotherOccupation { get; set; }
-        
-        //LICENSURE EXAM
+
+        ////LICENSURE EXAM
         public string GovLicensureExam { get; set; }
-        public DateTime DateExam { get; set; }
+        public string DateExam { get; set; }
         public string Rating { get; set; }
         public string RegNo { get; set; }
         public string PlaceofExam { get; set; }
-        public DateTime DateRegitered { get; set; }
-        public DateTime Validity { get; set; }
+        public string DateRegitered { get; set; }
+        public string Validity { get; set; }
         public string Remarks { get; set; }
 
-        //EDUCATION
+        ////EDUCATION
         public string PrimarySchool { get; set; }
         public string PrimaryAcademicHonor { get; set; }
         public string PrimaryYearGraduated { get; set; }

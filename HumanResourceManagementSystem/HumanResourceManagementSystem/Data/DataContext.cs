@@ -1,4 +1,5 @@
-﻿using HumanResourceManagementSystem.Models;
+﻿using HRManagementSystem_MVC_.Models;
+using HumanResourceManagementSystem.Models;
 using HumanResourceManagementSystem.Models.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -26,6 +26,9 @@ namespace HumanResourceManagementSystem.Migrations
                     b.Property<string>("DepartmentName")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
@@ -55,13 +58,13 @@ namespace HumanResourceManagementSystem.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateExam")
+                    b.Property<string>("DateExam")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateHired")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateRegitered")
+                    b.Property<string>("DateRegitered")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DegreeEarned")
@@ -293,7 +296,7 @@ namespace HumanResourceManagementSystem.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Validity")
+                    b.Property<string>("Validity")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Weight")
@@ -325,6 +328,9 @@ namespace HumanResourceManagementSystem.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PositionName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

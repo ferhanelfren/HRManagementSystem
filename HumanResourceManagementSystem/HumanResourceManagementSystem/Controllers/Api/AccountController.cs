@@ -1,7 +1,8 @@
-﻿
-using HumanResourceManagementSystem.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using HumanResourceManagementSystem.Services;
+using HumanResourceManagementSystem.ViewModels;
+using HumanResourceManagementSystem.ViewModels.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace HumanResourceManagementSystem.Controllers.Api
 {
@@ -9,52 +10,94 @@ namespace HumanResourceManagementSystem.Controllers.Api
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
         private readonly AccountService _accountService;
+        
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration,
             AccountService accountService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
             _accountService = accountService;
         }
 
-
-        //[Authorize]
-        //[HttpPost("AddUser")]
-        //public async Task<ActionResult<AddOrEditUserResponseVM>> AddUser([FromBody] UserVM uservm)
+        //[HttpGet]
+        //public async Task<ActionResult<List<EmployeeVM>>> GetUsers(string useruserNameFilter = null)
         //{
-        //    if(ModelState.IsValid)
+        //    var users = await _accountService.GetUsers(useruserNameFilter);
+        //    if(users == null)
         //    {
-        //        try
-        //        {
-        //            var userRole = ClaimsHelper.GetClaimValue(ClaimNames.RoleType, HttpContext.User.Claims);
-        //            var isRestricted = true;
-                    
-        //            if(userRole == RoleNames.Administrator)
-        //            {
-        //                isRestricted = false;
-        //            }
-
-        //            var result = await _accountService.AddUser(uservm, isRestricted);
-        //            return result;
-        //        }
-        //        catch (Exception ex) 
-        //        {
-        //            return BadRequest(new AddOrEditUserResponseVM { Errors = new string[] { ex.Message }, Succeeded = false });
-        //        }
-        //    } else
-        //    {
-        //        return BadRequest(new AddOrEditUserResponseVM { Errors = new string[] { "Invalid Model State" }, Succeeded = false });
+        //        return BadRequest("Faild to retrieve users.");
         //    }
+
+        //    return Ok(users);
         //}
 
-           }
+        [HttpGet("GetEmployees")]
+        public async Task<ActionResult> GetEmployees(string userNameFilter = null)
+        {
+            try
+            {
+                var employees = await _accountService.GetEmployees(userNameFilter);
+                if (employees == null)
+                {
+                    return BadRequest("Failed to retrieve users.");
+                }
+                return Ok(employees);
+            }catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving employees.");
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
+        {
+            
+            var response = await _accountService.Login(loginVM);
+            if(response.Status == "Error")
+            {
+                return BadRequest(response.Message);
+            }
+
+            return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("CreateEmployee")]
+        public async Task<IActionResult> CreateEmployee([FromForm] HRMSUserVm userVm)
+        {
+            var response = await _accountService.CreateEmployee(userVm);
+            if (response.Status == "Error")
+            {
+                return BadRequest(response.Message);
+            }
+
+            return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("InitializeAdmin")]
+        public async Task<IActionResult> InitializeAdmin()
+        {
+            await _accountService.InitializeAdmin();
+            return Ok("Admin Successfully Created");
+        }
+
+        [HttpPost]
+        [Route("InitializeEmployee")]
+        public async Task<IActionResult> InitializeEmployee()
+        {
+            await _accountService.InitializeEmployee();
+            return Ok("Employee Successfully Created");
+        }
+
+
+
+
+    }
+
+
 }

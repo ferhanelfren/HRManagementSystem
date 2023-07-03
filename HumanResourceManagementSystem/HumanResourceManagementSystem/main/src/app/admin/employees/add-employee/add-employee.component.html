@@ -7,185 +7,1024 @@
               <h2>Basic Tab Examples</h2>
             </div> -->
             <div class="body">
-              <form class="m-4 " [formGroup]="docForm" (ngSubmit)="onSubmit()">
-                <mat-tab-group class="form-overflow">
-                  <mat-tab label="Personal Information">
+              <form class="m-4 " [formGroup]="docForm">
 
-                      <!-- FIRST, LAST AND MIDDLE NAMES -->
-                      <div class="row mt-5">
-                        <div class="col">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Surname</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Surname is required
-                            </mat-error>
-                          </mat-form-field>
+                <!-- <div class="avatar-container">
+                  <div class="image-container"></div>
+                  <label for="avatar-input-file">
+                      <div class="icon-wrapper">
+                          <input type="file" id="avatar-input-file" accept="image/*"/>
+                          <mat-icon class="icon" fontIcon="edit"></mat-icon>
+                      </div>
+                  </label>
+                </div> -->
+                <!-- <div class="row">
+                  <div class="col col1">
+                    <div class="row">
+                      <div class="col  col-md-2">
+                        <div class="avatar-container">
+                          <div class="image-container" *ngIf="employeeModel.imageFile; else placeholder"
+                            [ngClass]="{'box-shadow-avatar': !!employeeModel.imageFile}"
+                            [ngStyle]="{backgroundImage: 'url(' + getImageUrl() + ')'}">
+                          </div>
+
+                          <ng-template #placeholder>
+                            <div class="image-container avatar-placeholder">
+                            </div>
+                          </ng-template>
+
+                          <label for="avatar-input-file">
+                            <div class="icon-wrapper">
+                              <input type="file" id="avatar-input-file" accept="image/*" (change)="onFileSelected($event)" />
+                              <mat-icon class="icon" fontIcon="edit"></mat-icon>
+                            </div>
+                          </label>
                         </div>
-                        <div class="col">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput formControlName="last" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              First Name is required
-                            </mat-error>
-                          </mat-form-field>
+                      </div>
+                      <div class="col d-block">
+                        <div class="header-container">
+                          <p>
+                            Please click the edit icon for upload or change the picture <br>
+                            Image size size maksimum 5 mb <br>
+                            Image format JPG, JPEG, PNG
+                          </p>
                         </div>
-                        <div class="col">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Middle Name</mat-label>
-                            <input matInput formControlName="last" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Middle Name is required
-                            </mat-error>
-                          </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2 col2">
+                    <div class="example-button-row align-middle">
+                      <button mat-raised-button
+                      color="primary" (click)="onSave()"
+                      class="large-button">
+                        <mat-icon class="icon">save</mat-icon> Save
+                      </button>
+                      <button mat-raised-button color="warn" (click)="onSave()" class="large-button">
+                        <mat-icon class="icon">delete</mat-icon> Clear
+                      </button>
+                    </div>
+                  </div>
+                </div> -->
+                <br>
+                <br>
+                <div class="row">
+                  <h2>Employee Account</h2>
+                  <hr>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-label>Username</mat-label>
+                          <input matInput
+                          formControlName="username"
+                          required>
+                          <mat-error *ngIf="docForm.get('username')?.hasError('required')">
+                            Username is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Password</mat-label>
+                          <input matInput [type]="hide ? 'password' : 'text'"
+                           formControlName="password">
+                          <a class="show-pwd-icon" href="#" onClick="return false;" matSuffix (click)="hide = !hide"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                          </a>
+                          <mat-error *ngIf="docForm.get('password')?.hasError('required')">
+                            Password is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-label>Employee No.</mat-label>
+                          <input matInput
+                          formControlName="employeeNumber"
+                          required>
+                          <mat-error *ngIf="docForm.get('employeeNumber')?.hasError('required')">
+                            Employee Number is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Date Hired</mat-label>
+                          <input matInput formControlName="dateHired" [matDatepicker]="dateHired" required>
+                          <mat-datepicker-toggle matSuffix [for]="dateHired"></mat-datepicker-toggle>
+                          <mat-datepicker #dateHired></mat-datepicker>
+                          <mat-error *ngIf="docForm.get('dateHired')?.hasError('required')">
+                            Hired Date is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Position</mat-label>
+                          <mat-select
+                            formControlName="positionName">
+                            <mat-option
+                            *ngFor="let position of positionsNameVM"
+                            [value]="position.positionName"
+                            >{{position.positionName}}</mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="docForm.get('positionName')?.hasError('required')">
+                            Company Position is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Department</mat-label>
+                          <mat-select
+                            formControlName="departmentName">
+                            <mat-option
+                            *ngFor="let departments of departmentsNameVM"
+                            [value]="departments.departmentName">{{departments.departmentName}}</mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="docForm.get('departmentName')?.hasError('required')">
+                            Company Department is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <br>
+                <br>
+                <div class="row">
+                  <h2>Personal Information</h2>
+                  <hr>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-label>Last Name</mat-label>
+                          <input matInput formControlName="lastName" required>
+                          <mat-error *ngIf="docForm.get('lastName')?.hasError('required')">
+                            Last Name is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-label>First Name</mat-label>
+                          <input matInput formControlName="firstName" required>
+                          <mat-error *ngIf="docForm.get('firstName')?.hasError('required')">
+                            First Name is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-label>Middle Name</mat-label>
+                          <input matInput formControlName="middleName" [(ngModel)]="employeeModel.middleName" required>
+                          <mat-error *ngIf="docForm.get('middleName')?.hasError('required')">
+                            Middle Name is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <mat-form-field class="example-full-width"appearance="outline">
+                          <mat-label>Extension Name (Optional)</mat-label>
+                          <input matInput formControlName="extentName">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+
+                    <br>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Place of Birth</mat-label>
+                              <input matInput
+                              formControlName="placeofBirth"
+                              required>
+                              <mat-error *ngIf="docForm.get('placeofBirth')?.hasError('required')">
+                                Place of Birth is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Birth of Date</mat-label>
+                                <input matInput
+                                formControlName="birthDate"
+                                [matDatepicker]="picker" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngIf="docForm.get('birthDate')?.hasError('required')">
+                                  Birth Date is required
+                                </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Gender</mat-label>
+                              <mat-select formControlName="gender">
+                                <mat-option value="Male">Male</mat-option>
+                                <mat-option value="Female">Female</mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="docForm.get('gender')?.hasError('required')">
+                                Gender is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
                         </div>
-                        <div class="col col-lg-2 ">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Citizenship</mat-label>
+                              <input matInput
+                              formControlName="citizenship"
+                              required>
+                              <mat-error *ngIf="docForm.get('citizenship')?.hasError('required')">
+                                Citizenship is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Civil Status</mat-label>
+                              <mat-select formControlName="civilStatus">
+                                <mat-option value="Single">Single</mat-option>
+                                <mat-option value="Married">Married</mat-option>
+                                <mat-option value="Divorced">Divorced</mat-option>
+                                <mat-option value="Widowed">Widowed</mat-option>
+                                <mat-option value="Separated">Separated</mat-option>
+                                <mat-option value="Annulled">Annulled</mat-option>
+                                <mat-option value="Single Parent">Single Parent</mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="docForm.get('civilStatus')?.hasError('required')">
+                                Civil Status is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Blood Type</mat-label>
+                              <input matInput
+                              formControlName="bloodType"
+                              required>
+                              <mat-error *ngIf="docForm.get('bloodType')?.hasError('required')">
+                                Blood Type is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Height (cm)</mat-label>
+                              <input matInput
+                              formControlName="height">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Weight (kg)</mat-label>
+                              <input matInput
+                              formControlName="weight">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Religion</mat-label>
+                              <input matInput
+                              formControlName="religion" required>
+                              <mat-error *ngIf="docForm.get('religion')?.hasError('required')">
+                                Religion is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Ethnicity</mat-label>
+                              <input matInput
+                              formControlName="ethnicity">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Tribal Affiliation</mat-label>
+                              <input matInput
+                              formControlName="tribalAffiliation">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <br>
+                    <br>
+                    <div class="row">
+                      <h3>Present Address</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>St., Building No., Unit No., Baranggay</mat-label>
+                              <input matInput
+                              formControlName="presentAddress"
+                              required>
+                              <mat-error *ngIf="docForm.get('presentAddress')?.hasError('required')">
+                                Present Address is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>City / Municipality</mat-label>
+                              <input matInput
+                              formControlName="presentCityMun"
+                              required>
+                              <mat-error *ngIf="docForm.get('presentCityMun')?.hasError('required')">
+                                Present City / Municipality is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Province</mat-label>
+                              <input matInput
+                              formControlName="presentProvince"
+                              required>
+                              <mat-error *ngIf="docForm.get('presentProvince')?.hasError('required')">
+                                Present Province is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Zip</mat-label>
+                              <input matInput
+                              formControlName="presentZip"
+                              required>
+                              <mat-error *ngIf="docForm.get('presentZip')?.hasError('required')">
+                                Present Zip is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h3>Permanent Address</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>St., Building No., Unit No., Baranggay</mat-label>
+                              <input matInput
+                              formControlName="permanentAddress"
+                              required>
+                              <mat-error *ngIf="docForm.get('permanentAddress')?.hasError('required')">
+                                Permanent Address is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>City / Municipality</mat-label>
+                              <input matInput
+                              formControlName="permanentCityMun"
+                              required>
+                              <mat-error *ngIf="docForm.get('permanentCityMun')?.hasError('required')">
+                                Permanent City / Municipality is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Province</mat-label>
+                              <input matInput
+                              formControlName="permanentProvince"
+                              required>
+                              <mat-error *ngIf="docForm.get('permanentProvince')?.hasError('required')">
+                                Permanent Province is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Zip</mat-label>
+                              <input matInput
+                              formControlName="permanentZip"
+                              required>
+                              <mat-error *ngIf="docForm.get('permanentZip')?.hasError('required')">
+                                Permanent Zip is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h3>Contact Information</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Mobile Number</mat-label>
+                              <input matInput
+                              formControlName="phoneNumber"
+                              required>
+                              <mat-error *ngIf="docForm.get('phoneNumber')?.hasError('required')">
+                                Mobile Number is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Email Address</mat-label>
+                              <input matInput
+                              formControlName="email">
+                              <mat-error *ngIf="docForm.get('email')?.hasError('required')">
+                                Email is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h3>Identification Information</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>National ID No.</mat-label>
+                              <input matInput formControlName="nationalIDNo">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>T.I.N</mat-label>
+                              <input matInput formControlName="tINNo">
+                              <mat-error *ngIf="docForm.get('tINNo')?.hasError('required')">
+                                TIN Number is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>SSS No.</mat-label>
+                              <input matInput required formControlName="sSSNo">
+                              <mat-error *ngIf="docForm.get('sSSNo')?.hasError('required')">
+                                SSS Number is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Pag-IBIG No.</mat-label>
+                              <input matInput formControlName="pagibigNo" required>
+                              <mat-error *ngIf="docForm.get('pagibigNo')?.hasError('required')">
+                                Pagibig Number is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Philhealth No.</mat-label>
+                              <input matInput formControlName="philHealthNo" required>
+                              <mat-error *ngIf="docForm.get('philHealthNo')?.hasError('required')">
+                                Philhealth Number is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <h3>Parent's Information</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Father's Full Name</mat-label>
+                              <input matInput
+                              formControlName="fatherName"
+                              required>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Occupation</mat-label>
+                              <input matInput
+                              formControlName="fatherOccupation"
+                              required>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Mother's Full Name</mat-label>
+                              <input matInput
+                              formControlName="motherName"
+                              required>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Occupation</mat-label>
+                              <input matInput
+                              formControlName="motherOccupation"
+                              required>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <h3>Spouse Information</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Spouse Full Name</mat-label>
+                              <input
+                              formControlName="spouseFullName"
+                              matInput>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Contact No.</mat-label>
+                              <input
+                              formControlName="spouseContactNo"
+                              matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Occupation</mat-label>
+                              <input
+                              formControlName="spouseOccupation"
+                              matInput>
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Company Name</mat-label>
+                              <input
+                              formControlName="spouseCompanyName"
+                              matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Company Address</mat-label>
+                              <input
+                              formControlName="spouseCompanyAdd"
+                              matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="row">
+                      <h3>License</h3>
+                      <hr>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Licensure Examination</mat-label>
+                              <input matInput
+                              formControlName="govLicensureExam">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Rating</mat-label>
+                              <input matInput
+                              formControlName="rating">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Examination Date:</mat-label>
+                              <input matInput
+                              formControlName="dateExam">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
                           <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Ext. Name (Optional)</mat-label>
-                            <input matInput formControlName="last">
+                            <mat-label>Place of Exam</mat-label>
+                            <input matInput
+                            formControlName="placeofExam">
                           </mat-form-field>
                         </div>
                       </div>
+                    </div>
 
-                      <!-- PLACE OF BIRTH, GENDER, BDATE -->
-                      <div class="row">
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Place of Birth</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Place of Birth is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Gender</mat-label>
-                            <mat-select>
-                              <mat-option value="Male">Male</mat-option>
-                              <mat-option value="Female">Female</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Gender is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width" appearance="outline">
-                              <mat-label>Birth of Date</mat-label>
-                              <input matInput [matDatepicker]="picker">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Blood Type</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Blood Type is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Height (cm)</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Height (cm) is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-2">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Weight (kg)</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Weight (kg) is required
-                            </mat-error>
-                          </mat-form-field>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Registration No.</mat-label>
+                              <input matInput
+                              formControlName="regNo">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Registered Date:</mat-label>
+                              <input matInput
+                              formControlName="dateRegitered">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-4">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Validity Date:</mat-label>
+                              <input matInput
+                              formControlName="validity">
+                            </mat-form-field>
+                          </div>
                         </div>
                       </div>
+                    </div>
 
-                      <!-- CITIZENSHIP, CIVIL STATUS, RELIGION -->
-                      <div class="row">
-                        <div class="col">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Citizenship</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Citizenship is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col">
-                          <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Civil Status</mat-label>
-                            <mat-select required="true">
-                              <mat-option value="Single">Single</mat-option>
-                              <mat-option value="Married">Married</mat-option>
-                              <mat-option value="Separated">Separated</mat-option>
-                              <mat-option value="Widowed">Widowed</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Gender is required
-                            </mat-error>
-                          </mat-form-field>
-                        </div>
-                        <div class="col">
-                          <mat-form-field class="example-full-width " appearance="outline">
-                            <mat-label>Religion</mat-label>
-                            <input matInput formControlName="first" required>
-                            <mat-error *ngIf="docForm.get('first')?.hasError('required')">
-                              Religion is required
-                            </mat-error>
-                          </mat-form-field>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Remarks</mat-label>
+                              <textarea
+                              formControlName="remarks"
+                              matInput></textarea>
+                            </mat-form-field>
+                          </div>
                         </div>
                       </div>
+                    </div>
+
+                    <div class="row">
+                      <h3>Educational Attainment</h3>
+                      <hr>
+                      <div class="col-8">
+                        <h4>Primary Education</h4>
+                        <div class="row">
+                          <div class="col-6">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>School Name</mat-label>
+                              <input matInput formControlName="primarySchool">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Academic Honor</mat-label>
+                              <input matInput formControlName="primaryAcademicHonor">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Year Graduated</mat-label>
+                              <input matInput formControlName="primaryYearGraduated">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h4>Secondary Education</h4>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-6">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>School Name</mat-label>
+                              <input matInput formControlName="secondarySchool">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Academic Honor</mat-label>
+                              <input matInput formControlName="secondaryAcademicHonor">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Year Graduated</mat-label>
+                              <input matInput formControlName="secondaryYearGraduated">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <h4>Tertiary Education</h4>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-6">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>School Name</mat-label>
+                              <input matInput formControlName="tertiarySchool">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Academic Honor</mat-label>
+                              <input matInput formControlName="tertiaryAcademicHonor">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Year Graduated</mat-label>
+                              <input matInput formControlName="tertiaryYearGraduated">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Degree</mat-label>
+                              <input matInput formControlName="degreeEarned">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Major</mat-label>
+                              <input matInput formControlName="major">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h4>Master's Education</h4>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-6">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>School Name</mat-label>
+                              <input matInput formControlName="mastersSchool">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Academic Honor</mat-label>
+                              <input matInput formControlName="mastersAcademicHonor">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Year Graduated</mat-label>
+                              <input matInput formControlName="mastersYearGraduated">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Degree</mat-label>
+                              <input matInput formControlName="mastersDegreeEarned">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Major</mat-label>
+                              <input matInput formControlName="mastersMajor">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <h4>Doctorate Education</h4>
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-6">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>School Name</mat-label>
+                              <input matInput formControlName="phdSchool">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Academic Honor</mat-label>
+                              <input matInput formControlName="phdAcademicHonor">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Year Graduated</mat-label>
+                              <input matInput formControlName="phdYearGraduated">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Degree</mat-label>
+                              <input matInput formControlName="phdDegreeEarned">
+                            </mat-form-field>
+                          </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width " appearance="outline">
+                              <mat-label>Major</mat-label>
+                              <input matInput formControlName="phdMajor">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
 
-                  </mat-tab>
-                  <mat-tab label="Family Background">
-                    <br>
-                    <b>Profile Content</b>
-                    <p>
-                      Lorem ipsum dolor sit amet, ut duo atqui exerci dicunt, ius impedit
-                      mediocritatem an. Pri ut tation electram moderatius.
-                      Per te suavitate democritum. Duis nemore probatus ne quo, ad liber essent
-                      aliquid
-                      pro. Et eos nusquam accumsan, vide mentitum fabellas ne est, eu munere
-                      gubergren
-                      sadipscing mel.
-                    </p>
-                  </mat-tab>
-                  <mat-tab label="Educational Attainment">
-                    <br>
-                    <b>Message Content</b>
-                    <p>
-                      Lorem ipsum dolor sit amet, ut duo atqui exerci dicunt, ius impedit
-                      mediocritatem an. Pri ut tation electram moderatius.
-                      Per te suavitate democritum. Duis nemore probatus ne quo, ad liber essent
-                      aliquid
-                      pro. Et eos nusquam accumsan, vide mentitum fabellas ne est, eu munere
-                      gubergren
-                      sadipscing mel.
-                    </p>
-                  </mat-tab>
-                  <mat-tab label="Licensure Examinations">
-                    <br>
-                    <b>Message Content</b>
-                    <p>
-                      Lorem ipsum dolor sit amet, ut duo atqui exerci dicunt, ius impedit
-                      mediocritatem an. Pri ut tation electram moderatius.
-                      Per te suavitate democritum. Duis nemore probatus ne quo, ad liber essent
-                      aliquid
-                      pro. Et eos nusquam accumsan, vide mentitum fabellas ne est, eu munere
-                      gubergren
-                      sadipscing mel.
-                    </p>
-                  </mat-tab>
-                </mat-tab-group>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  </div>
+                </div>
+
+                <br>
+                <br>
+                <br>
+                <hr>
+                <br>
+                <div class="row">
+                  <div class="col col1">
+                    <div class="row">
+                      <!-- <div class="col  col-md-2">
+                        <div class="avatar-container">
+                          <div class="image-container" *ngIf="employeeModel.imageFile; else placeholder"
+                            [ngClass]="{'box-shadow-avatar': !!employeeModel.imageFile}"
+                            [ngStyle]="{backgroundImage: 'url(' + getImageUrl() + ')'}">
+                          </div>
+
+                          <ng-template #placeholder>
+                            <div class="image-container avatar-placeholder">
+                            </div>
+                          </ng-template>
+
+                          <label for="avatar-input-file">
+                            <div class="icon-wrapper">
+                              <input type="file" id="avatar-input-file" accept="image/*" (change)="onFileSelected($event)" />
+                              <mat-icon class="icon" fontIcon="edit"></mat-icon>
+                            </div>
+                          </label>
+                        </div>
+                      </div> -->
+                      <!-- <div class="col d-block">
+                        <div class="header-container">
+                          <p>
+                            Please click the edit icon for upload or change the picture <br>
+                            Image size size maksimum 5 mb <br>
+                            Image format JPG, JPEG, PNG
+                          </p>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="col-2 col2">
+                    <div class="example-button-row align-middle">
+
+                      <button mat-raised-button
+                      color="primary" (click)="onSave()"
+                      class="btn-space"> Sumbit
+                      </button>
+                      <button mat-raised-button color="warn" class="btn-space"> Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
               </form>
             </div>
           </div>
