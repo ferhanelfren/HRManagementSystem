@@ -48,6 +48,17 @@ namespace HumanResourceManagementSystem.Services
         }
 
 
+        public async Task<HRMSUser> GetEmployeeByUserName(string employeeUserName)
+        {
+            return await _dataContext.Set<HRMSUser>().FirstOrDefaultAsync(u => u.UserName == employeeUserName);
+        }
+
+        //public async Task<HRMSUser> GetEmployeeByUserName(string employeeUserName)
+        //{
+        //    return await _dataContext.Set<HRMSUser>()
+        //        .FirstOrDefaultAsync(u => u.UserName == employeeUserName);
+        //}
+
         public async Task<List<EmployeeVM>> GetEmployees(string userNameFilter = null)
         {
             try
@@ -57,7 +68,7 @@ namespace HumanResourceManagementSystem.Services
 
                 if(!string.IsNullOrEmpty(userNameFilter))
                 {
-                    // query = query.Where( u => u.LastName == userNameFilter );
+                    
                     query = query.Where(u => (u.LastName + ", " + u.FirstName + " " + u.MiddleName).Contains(userNameFilter));
                 }
 
@@ -297,6 +308,89 @@ namespace HumanResourceManagementSystem.Services
                 Message = "Employee account creation failed!"
             };
         }
+
+        public async Task<Response> UpdateEmployee(string id, [FromBody] HRMSUserVm userVm)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Employee not found!"
+                };
+            }
+
+            var position = await _employeeService.GetPositionByName(userVm.PositionName);
+            var department = await _employeeService.GetDepartmentByName(userVm.DepartmentName);
+
+            if (position == null)
+            {
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Position not found!"
+                };
+            }
+
+            if (department == null)
+            {
+                return new Response
+                {
+                    Status = "Error",
+                    Message = "Department not found!"
+                };
+            }
+
+            _mapper.Map(userVm, user);
+            user.Positions = position;
+            user.Departments = department;
+            user.TimeStamp = DateTime.Now;
+
+            // Convert the image file to base64 string
+            if (userVm.ImageFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await userVm.ImageFile.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
+                    user.Image = Convert.ToBase64String(imageBytes);
+                }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new Response
+                {
+                    Status = "Success",
+                    Message = "Employee account updated successfully!"
+                };
+            }
+
+            return new Response
+            {
+                Status = "Error",
+                Message = "Employee account update failed!"
+            };
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         public async Task<Response> CreateEmployeeAccount(
@@ -600,6 +694,7 @@ namespace HumanResourceManagementSystem.Services
             if(user != null && await _userManager.CheckPasswordAsync(user, loginVM.Password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
+                var username = user.UserName;
 
                 var authClaims = new List<Claim>
                 {
@@ -618,9 +713,10 @@ namespace HumanResourceManagementSystem.Services
                 //_response.Status = "Success";
                 //_response.Message = "You have successfully logged in";
                 //_response.Token = new JwtSecurityTokenHandler().WriteToken((SecurityToken)token);
+               // Console.WriteLine("Username: " + username);
 
                 _tokenVm.Status = "Success";
-                _tokenVm.Message = "You have successfully logged in";
+                _tokenVm.Message = "You have successfully logged in" + username;
                 _tokenVm.Token = new JwtSecurityTokenHandler().WriteToken((SecurityToken)token);
                 _tokenVm.Expiration = token.ValidTo;
                 _tokenVm.Role = roles;

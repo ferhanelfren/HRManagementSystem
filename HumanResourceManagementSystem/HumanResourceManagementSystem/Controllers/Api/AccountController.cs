@@ -49,6 +49,7 @@ namespace HumanResourceManagementSystem.Controllers.Api
         }
 
 
+
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
@@ -76,6 +77,20 @@ namespace HumanResourceManagementSystem.Controllers.Api
 
             return Ok(response);
         }
+
+        [HttpPut("UpdateEmployee/{id}")]
+        public async Task<IActionResult> UpdateEmployee(string id, [FromBody] HRMSUserVm userVm)
+        {
+            var response = await _accountService.UpdateEmployee(id, userVm);
+
+            if (response.Status == "Success")
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
+
 
 
         [HttpPost]

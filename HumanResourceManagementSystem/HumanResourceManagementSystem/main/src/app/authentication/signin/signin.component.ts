@@ -32,6 +32,7 @@ export class SigninComponent
 
   errorAlrtMsg!: string;
   hide = true;
+  username: string;
 
   loginModel= new LoginVM();
 
@@ -107,6 +108,7 @@ export class SigninComponent
           if(role === 'Admin') {
             this.showAlrtMsg = true;
             this.router.navigate(['/admin/dashboard/main']);
+
           } else if(role === 'User'){
             this.showAlrtMsg = true;
             this.router.navigate(['/employee/dashboard']);

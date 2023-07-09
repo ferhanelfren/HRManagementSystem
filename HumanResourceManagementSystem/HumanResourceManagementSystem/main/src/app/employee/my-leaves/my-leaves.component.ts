@@ -65,42 +65,55 @@ export class MyLeavesComponent
   contextMenu?: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
+
+
+
+
+
+
   ngOnInit() {
     this.loadData();
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      const userData = JSON.parse(storedData);
+      const username = userData.username; // Replace 'username' with the actual property name in your user data object
+      console.log('Username:', username);
+    }
   }
   refresh() {
     this.loadData();
   }
   addNew() {
-    let tempDirection: Direction;
-    if (localStorage.getItem('isRtl') === 'true') {
-      tempDirection = 'rtl';
-    } else {
-      tempDirection = 'ltr';
-    }
-    const dialogRef = this.dialog.open(FormDialogComponent, {
-      data: {
-        myLeaves: this.myLeaves,
-        action: 'add',
-      },
-      direction: tempDirection,
-    });
-    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-      if (result === 1) {
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataService
-        this.exampleDatabase?.dataChange.value.unshift(
-          this.myLeavesService.getDialogData()
-        );
-        this.refreshTable();
-        this.showNotification(
-          'snackbar-success',
-          'Add Record Successfully...!!!',
-          'bottom',
-          'center'
-        );
-      }
-    });
+
+    // let tempDirection: Direction;
+    // if (localStorage.getItem('isRtl') === 'true') {
+    //   tempDirection = 'rtl';
+    // } else {
+    //   tempDirection = 'ltr';
+    // }
+    // const dialogRef = this.dialog.open(FormDialogComponent, {
+    //   data: {
+    //     myLeaves: this.myLeaves,
+    //     action: 'add',
+    //   },
+    //   direction: tempDirection,
+    // });
+    // this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
+    //   if (result === 1) {
+    //     // After dialog is closed we're doing frontend updates
+    //     // For add we're just pushing a new row inside DataService
+    //     this.exampleDatabase?.dataChange.value.unshift(
+    //       this.myLeavesService.getDialogData()
+    //     );
+    //     this.refreshTable();
+    //     this.showNotification(
+    //       'snackbar-success',
+    //       'Add Record Successfully...!!!',
+    //       'bottom',
+    //       'center'
+    //     );
+    //   }
+    // });
   }
   editCall(row: MyLeaves) {
     this.id = row.id;

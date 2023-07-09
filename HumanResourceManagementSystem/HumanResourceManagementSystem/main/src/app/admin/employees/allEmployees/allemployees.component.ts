@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EmployeesService } from './employees.service';
 import { HttpClient } from '@angular/common/http';
@@ -26,6 +27,7 @@ import { AuthService } from 'src/app/core/service/auth.service';
 import { FileResponse } from 'src/app/hrms-swagger';
 import { EmployeeModel } from 'src/app/core/models/employeeModel';
 import { MatTableDataSource } from '@angular/material/table';
+import { EditEmployComponent } from './dialogs/edit-employ/edit-employ.component';
 
 @Component({
   selector: 'app-allemployees',
@@ -51,8 +53,9 @@ export class AllemployeesComponent
   dataSource: MatTableDataSource<EmployeeModel>;
   fileResponse: FileResponse | null = null;
   userNameFilter: string;
-  employeesModel: EmployeeModel[] | null = null;
+  public employeesModel:  EmployeeModel = new EmployeeModel();
   employees: EmployeeModel[] | null = null;
+
 
   exampleDatabase?: EmployeesService;
   //dataSource!: ExampleDataSource;
@@ -161,9 +164,154 @@ export class AllemployeesComponent
   //   );
   // }
 
-  onEdit(employee: EmployeeModel){
-    console.log(employee);
+  onEdit(data: any){
+    console.log(data);
+    const dialogRef = this.dialog.open(EditEmployComponent, {
+      data: {
+        id: data.id,
+        username: data.username,
+        password: data.password,
+        positionName: data.positionName,
+        employeeNumber: data.employeeNumber,
+        departmentName: data.departmentName,
+
+        firstName: data.firstName,
+        middleName: data.middleName,
+        lastName: data.lastName,
+        extentName: data.extentName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        gender: data.gender,
+        placeofBirth: data.placeofBirth,
+        birthDate: new Date(data.birthDate),
+        bloodType: data.bloodType,
+        height: data.height,
+        weight: data.weight,
+
+
+        citizenship: data.citizenship,
+        civilStatus: data.civilStatus,
+
+        religion: data.religion,
+        ethnicity: data.ethnicity,
+        tribalAffiliation: data.tribalAffiliation,
+
+        presentAddress: data.presentAddress,
+        presentCityMun: data.presentCityMun,
+        presentProvince: data.presentProvince,
+        presentZip: data.presentZip,
+        permanentAddress: data.permanentAddress,
+        permanentCityMun: data.permanentCityMun,
+        permanentProvince: data.permanentProvince,
+        permanentZip: data.permanentZip,
+
+        dateHired: new Date(data.dateHired),
+        nationalIDNo: data.nationalIDNo,
+        tINNo: data.tINNo,
+        sSSNo: data.sSSNo,
+        pagibigNo: data.pagibigNo,
+        philHealthNo: data.philHealthNo,
+
+        spouseFullName: data.spouseFullName,
+        spouseContactNo: data.spouseContactNo,
+        spouseOccupation: data.spouseOccupation,
+        spouseCompanyName: data.spouseCompanyName,
+        spouseCompanyAdd: data.spouseCompanyAdd,
+
+        fatherName: data.fatherName,
+        fatherOccupation: data.fatherOccupation,
+        motherName: data.motherName,
+        motherOccupation: data.motherOccupation,
+
+        govLicensureExam: data.govLicensureExam,
+        dateExam: data.dateExam,
+        rating: data.rating,
+        regNo: data.regNo,
+        placeofExam: data.placeofExam,
+        dateRegitered: data.dateRegitered,
+        validity: data.validity,
+        remarks: data.remarks,
+
+        primarySchool: data.primarySchool,
+        primaryAcademicHonor: data.primaryAcademicHonor,
+        primaryYearGraduated: data.primaryYearGraduated,
+        secondarySchool: data.secondarySchool,
+        secondaryAcademicHonor: data.secondaryAcademicHonor,
+        secondaryYearGraduated: data.secondaryYearGraduated,
+        tertiarySchool: data.tertiarySchool,
+        tertiaryAcademicHonor: data.tertiaryAcademicHonor,
+        degreeEarned: data.degreeEarned,
+        major: data.major,
+        tertiaryYearGraduated: data.tertiaryYearGraduated,
+        mastersSchool: data.mastersSchool,
+        mastersAcademicHonor: data.mastersAcademicHonor,
+        mastersDegreeEarned: data.mastersDegreeEarned,
+        mastersMajor: data.mastersMajor,
+        mastersYearGraduated: data.mastersYearGraduated,
+        phdSchool: data.phdSchool,
+        phdAcademicHonor: data.phdAcademicHonor,
+        phdDegreeEarned: data.phdDegreeEarned,
+        phdMajor: data.phdMajor,
+        phdYearGraduated: data.phdYearGraduated,
+      }
+    });
+
+    dialogRef.componentInstance.updateSuccess.subscribe((success: boolean) => {
+      if (success) {
+        this.showNotification(
+          'snackbar-success',
+          'Department updated successfully',
+          'bottom',
+          'center'
+        );
+        this.refresh();
+      }
+    });
   }
+
+  // onEdit(data: any){
+  //   this.employeesModel = data;
+  //   // console.log(this.employeesModel);
+  //   const dialogRef = this.dialog.open(EditEmployComponent, {
+  //     data: this.employeesModel
+  //   });
+
+  //   dialogRef.componentInstance.updateSuccess.subscribe((success: boolean) => {
+  //     if (success) {
+  //       this.showNotification(
+  //         'snackbar-success',
+  //         'Department updated successfully',
+  //         'bottom',
+  //         'center'
+  //       );
+  //       this.refresh();
+  //     }
+  //   });
+  // }
+
+  // onEdit(data: any){
+  //   const dialogRef = this.dialog.open(EditDeptComponent, {
+  //     data: {
+  //       departmentId: data.id,
+  //       departmentData: data.departmentName
+  //     }
+  //   });
+
+  //   dialogRef.componentInstance.updateSuccess.subscribe((success: boolean) => {
+  //     if (success) {
+  //       this.showNotification(
+  //         'snackbar-success',
+  //         'Department updated successfully',
+  //         'bottom',
+  //         'center'
+  //       );
+  //       this.refresh();
+  //     }
+  //   });
+  // }
+
+
+
 
   onLoad() {
     this.authService.getEmployeeList(this.userNameFilter).subscribe(

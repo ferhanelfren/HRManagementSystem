@@ -28,6 +28,7 @@ import { EmployeeProfileComponent } from './employee-profile/employee-profile.co
 import { EmployeesService } from './allEmployees/employees.service';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { EditEmployComponent } from './allEmployees/dialogs/edit-employ/edit-employ.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     AddEmployeeComponent,
     EditEmployeeComponent,
     EmployeeProfileComponent,
+    EditEmployComponent,
   ],
   imports: [
     CommonModule,

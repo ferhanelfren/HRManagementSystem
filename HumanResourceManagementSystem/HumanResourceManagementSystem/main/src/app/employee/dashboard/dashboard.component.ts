@@ -16,6 +16,8 @@ import {
   ApexGrid,
   ApexResponsive,
 } from 'ng-apexcharts';
+import { DatePipe, Time } from '@angular/common';
+import { Subject, interval, takeUntil } from 'rxjs';
 
 export type chartOptions = {
   series: ApexAxisChartSeries;
@@ -48,9 +50,14 @@ export class DashboardComponent implements OnInit {
   public radialChartOptions!: Partial<chartOptions>;
   public gaugeChartOptions!: Partial<chartOptions>;
   public stackBarChart!: Partial<chartOptions>;
-  constructor() {
-    // code here
+  constructor(private datePipe: DatePipe) {
+
   }
+
+  userData: any;
+  currentTime: string;
+  currentDate: string;
+  private destroy$: Subject<void> = new Subject<void>();
 
   // TODO start
   tasks = [
@@ -130,7 +137,29 @@ export class DashboardComponent implements OnInit {
     this.chart2();
     this.gaugechart();
     this.stackChart();
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      this.userData = JSON.parse(storedData);
+      // Now you can access and use this.userData in your dashboard component
+    }
+
+    interval(1000)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      this.currentTime = this.datePipe
+      .transform(new Date(), 'h:mm:ss');
+      this.currentDate = this.datePipe
+      .transform(new Date(), 'MMMM dd, yyyy');
+    });
+
   }
+
+  // ngOnDestroy() {
+  //   this.destroy$.next();
+  //   this.destroy$.complete();
+  // }
+
+
   private chart1() {
     this.barChartOptions = {
       series: [

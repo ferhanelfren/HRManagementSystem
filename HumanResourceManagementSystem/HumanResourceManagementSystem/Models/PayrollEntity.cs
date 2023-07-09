@@ -10,6 +10,6 @@
         public int NetPay { get; set; }
         public EmployeeAllowanceEntity EmployeeAllowanceEntity { get; set; }
         public EmployeeDeduction EmployeeDeduction { get; set; }
-        public LeaveEntity LeaveEntity { get; set; }
+        public Leave LeaveEntity { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import {
@@ -16,6 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexResponsive,
 } from 'ng-apexcharts';
+import { Subject, interval, takeUntil } from 'rxjs';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -50,7 +52,12 @@ export class MainComponent implements OnInit {
   public smallChart4Options!: Partial<ChartOptions>;
   public performanceRateChartOptions!: Partial<ChartOptions>;
 
-  constructor() {
+  currentTime: string;
+  currentDate: string;
+  private destroy$: Subject<void> = new Subject<void>();
+
+
+  constructor(private datePipe: DatePipe) {
     // constructor code
   }
   ngOnInit() {
@@ -62,6 +69,15 @@ export class MainComponent implements OnInit {
     this.chart2();
     this.chart4();
     this.projectChart();
+
+    interval(1000)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      this.currentTime = this.datePipe
+      .transform(new Date(), 'h:mm:ss');
+      this.currentDate = this.datePipe
+      .transform(new Date(), 'MMMM dd, yyyy');
+    });
   }
 
   // Doughnut chart start

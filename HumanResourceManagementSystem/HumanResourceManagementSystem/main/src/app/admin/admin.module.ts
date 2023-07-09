@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { AdminRoutingModule } from "./admin-routing.module";
 //import { AddDepartmentComponent } from './departments/add-department/add-department.component';
 //import { AddPositionsComponent } from './positions/add-positions/add-positions.component';
@@ -8,5 +8,6 @@ import { AdminRoutingModule } from "./admin-routing.module";
   declarations: [
   ],
   imports: [CommonModule, AdminRoutingModule],
+  providers: [DatePipe]
 })
 export class AdminModule {}

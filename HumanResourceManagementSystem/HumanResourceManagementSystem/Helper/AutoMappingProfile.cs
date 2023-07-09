@@ -15,7 +15,6 @@ namespace HumanResourceManagementSystem.Helper
             CreateMap<Positions, string>().ConvertUsing(src => src != null ? src.PositionName : string.Empty);
             CreateMap<HRMSUser, EmployeeVM>()
 
-
             //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.LastName}, {src.FirstName} {src.MiddleName} "))
                 .ForMember(dest => dest.Positions, opt => opt.MapFrom(src => src.Positions))

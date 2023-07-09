@@ -48,6 +48,8 @@ import { ComponentsModule } from '../shared/components/components.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChatComponent } from './chat/chat.component';
 
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -98,8 +100,10 @@ import { ChatComponent } from './chat/chat.component';
     MatProgressSpinnerModule,
     ComponentsModule,
     SharedModule,
+
   ],
   providers: [
+    DatePipe,
     AttendancesService,
     MyLeavesService,
     MyProjectsService,

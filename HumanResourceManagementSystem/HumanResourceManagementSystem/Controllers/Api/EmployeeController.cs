@@ -12,12 +12,15 @@ namespace HumanResourceManagementSystem.Controllers.Api
     public class EmployeeController : ControllerBase
     {
         private readonly EmployeeService _employeeService;
+        private readonly LeaveService _leaveService;
         private readonly DataContext _dataContext;
 
         public EmployeeController(EmployeeService employeeService,
+            LeaveService leaveService,
             DataContext dataContext)
         {
             _employeeService = employeeService;
+            _leaveService = leaveService;
             _dataContext = dataContext;
         }
 
@@ -82,6 +85,39 @@ namespace HumanResourceManagementSystem.Controllers.Api
             else
             {
                 return NotFound("Department name does not exist.");
+            }
+        }
+
+
+        //[HttpGet("{userName}")]
+        //public async Task<IActionResult> GetEmployeeByUserName(string userName)
+        //{
+        //    var employee = await GetEmployeeByUserName(userName);
+        //    if (employee == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(employee);
+        //}
+
+        [HttpPost("AddLeave")]
+        public async Task<IActionResult> AddLeave([FromBody] LeaveVM leaveVM)
+        {
+            try
+            {
+                var response = await _leaveService.AddLeave(leaveVM);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new Response
+                {
+                    Status = "Failed",
+                    Message = "Error adding Leave: " + ex.Message
+                };
+
+                return BadRequest(errorResponse);
             }
         }
 
@@ -187,12 +223,7 @@ namespace HumanResourceManagementSystem.Controllers.Api
             }
         }
 
-        [HttpPost("UploadImage")]
-        public async Task<IActionResult> UploadImage([FromBody] Image imageModel)
-        {
-            var imagePath = await _employeeService.UploadImage(imageModel);
-            return Ok(imagePath);
-        }
+       
 
     }
 }

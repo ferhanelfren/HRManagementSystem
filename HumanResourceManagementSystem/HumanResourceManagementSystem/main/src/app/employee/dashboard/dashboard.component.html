@@ -2,480 +2,62 @@
   <div class="content-block">
     <div class="block-header">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="'Dashboard'" [items]="['Home']" [active_item]="'Dashboard'">
+      <app-breadcrumb [title]="'Daily Time Record'" [items]="['Home']" [active_item]="'Daily Time Record'">
       </app-breadcrumb>
     </div>
-    <!-- Widgets -->
-    <div class="row">
-      <div class="col-lg-3 col-sm-6">
-        <div class="info-box7 bg-c-purple order-info-box7">
-          <div class="info-box7-block">
-            <h4 class="m-b-20">New Tickets</h4>
-            <h2 class="text-end"><span class="float-start">23</span><i class="fas fa-ticket-alt"></i></h2>
-            <p class="m-b-0">18% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="info-box7 bg-c-green order-info-box7">
-          <div class="info-box7-block">
-            <h4 class="m-b-20">Ticket Resolved</h4>
-            <h2 class="text-end"><span class="float-start">20</span><i class="far fa-check-circle"></i></h2>
-            <p class="m-b-0">21% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="info-box7 bg-c-orange order-info-box7">
-          <div class="info-box7-block">
-            <h4 class="m-b-20">Project Assigned</h4>
-            <h2 class="text-end"><span class="float-start">13</span><i class="fas fa-briefcase"></i></h2>
-            <p class="m-b-0">37% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="info-box7 bg-c-blue order-info-box7">
-          <div class="info-box7-block">
-            <h4 class="m-b-20">Available Leaves</h4>
-            <h2 class="text-end"><span class="float-start">34</span><i class="fas fa-umbrella-beach"></i></h2>
-            <p class="m-b-0">10% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- #END# Widgets -->
-    <div class="row">
-      <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
-        <div class="card">
-          <div class="header">
-            <h2>Weekly Working Hours</h2>
-          </div>
-          <div class="body">
-            <apx-chart [series]="barChartOptions.series!" [chart]="barChartOptions.chart!"
-              [dataLabels]="barChartOptions.dataLabels!" [plotOptions]="barChartOptions.plotOptions!"
-              [responsive]="barChartOptions.responsive!" [xaxis]="barChartOptions.xaxis!" [grid]="barChartOptions.grid!"
-              [legend]="barChartOptions.legend!" [colors]="barChartOptions.colors!" [tooltip]="barChartOptions.tooltip!"
-              [fill]="barChartOptions.fill!">
-            </apx-chart>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-        <div class="card">
-          <div class="header">
-            <h2>Running Project Review</h2>
-          </div>
-          <div class="body">
-            <apx-chart [series]="radialChartOptions.radialseries!" [chart]="radialChartOptions.chart!"
-              [plotOptions]="radialChartOptions.plotOptions!" [labels]="radialChartOptions.labels!"></apx-chart>
-            <div class="text-center p-t-20">
-              <div class="chart-note">
-                <span class="dot bg-orange"></span>
-                <span>Project 1</span>
-              </div>
-              <div class="chart-note">
-                <span class="dot bg-indigo"></span>
-                <span>Project 2</span>
-              </div>
-              <div class="chart-note msr-0">
-                <span class="dot bg-green"></span>
-                <span>Project 3</span>
-              </div>
-            </div>
-            <div class="text-center p-t-20">
-              <button mat-stroked-button color="primary">More Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>My Team</h2>
-          </div>
-          <div class="tableBody">
-            <div class="responsive_table">
-              <table class="table table-hover ">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Employee Name</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user5.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">Jay Soni
-                        </a></div>
-                      <div class="text-job font-11">Manager</div>
-                    </td>
-                    <td>
-                      <div class="badge col-green">Available</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user6.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">Sarah Smith
-                        </a></div>
-                      <div class="text-job font-11">Developer</div>
-                    </td>
-                    <td>
-                      <div class="badge col-red">Absend</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user3.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">Dr.Megha Trivedi
-                        </a></div>
-                      <div class="text-job font-11">Tester</div>
-                    </td>
-                    <td>
-                      <div class="badge col-green">Available</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user2.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">John Deo
-                        </a></div>
-                      <div class="text-job font-11">Designer</div>
-                    </td>
-                    <td>
-                      <div class="badge col-green">Available</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user1.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">Jacob Ryan
-                        </a></div>
-                      <div class="text-job font-11">Developer</div>
-                    </td>
-                    <td>
-                      <div class="badge col-red">Absend</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user8.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">Jay Soni
-                        </a></div>
-                      <div class="text-job font-11">Team Leader</div>
-                    </td>
-                    <td>
-                      <div class="badge col-green">Available</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user4.jpg" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com">John Deo
-                        </a></div>
-                      <div class="text-job font-11">Director</div>
-                    </td>
-                    <td>
-                      <div class="badge col-green">Available</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+    <div class="container">
+      <div class="card bg-transparent border-0 custom-card">
+        <div class="d-flex flex-column align-items-center bg-custom-gray
+        text-light p-4 rounded w-50 h-5 mx-auto">
+          <h1 class="mt-4">{{ currentDate }}</h1>
+          <h2 class="mb-4">{{ currentTime }}</h2>
+          <!-- <div class="time-section row w-50">
+            <div class="col time-in">
+              <h5 class="mb-0">Time In:</h5>
+              <p class="display-time">8:00 AM</p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <div class="card">
-          <div class="header">
-            <h2>My Task</h2>
-          </div>
-          <div class="tableBody">
-            <div class="responsive_table">
-              <table class="table table-hover dashboard-task-infos text-center">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Task</th>
-                    <th>Status</th>
-                    <th>Manager</th>
-                    <th>Progress</th>
-                    <th>Documents</th>
-                    <th>Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user1.jpg" alt="">
-                    </td>
-                    <td>Task A</td>
-                    <td>
-                      <span class="label l-bg-green shadow-style">Working</span>
-                    </td>
-                    <td>Jay Soni</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-green width-per-62" role="progressbar" aria-valuenow="62"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user2.jpg" alt="">
-                    </td>
-                    <td>Task B</td>
-                    <td>
-                      <span class="label l-bg-purple shadow-style">Completed</span>
-                    </td>
-                    <td>Sarah Smith</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-purple width-per-40" role="progressbar" aria-valuenow="40"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user3.jpg" alt="">
-                    </td>
-                    <td>Task C</td>
-                    <td>
-                      <span class="label l-bg-orange shadow-style">On Hold</span>
-                    </td>
-                    <td>Megha Trivedi</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-orange width-per-72" role="progressbar" aria-valuenow="72"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user4.jpg" alt="">
-                    </td>
-                    <td>Task D</td>
-                    <td>
-                      <span class="label l-bg-cyan shadow-style">Wait Approvel</span>
-                    </td>
-                    <td>Jacob Ryan</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-cyan width-per-95" role="progressbar" aria-valuenow="95"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user5.jpg" alt="">
-                    </td>
-                    <td>Task E</td>
-                    <td>
-                      <span class="label bg-green shadow-style">Suspended</span>
-                    </td>
-                    <td>Airi Satou</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-green width-per-87" role="progressbar" aria-valuenow="87"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user1.jpg" alt="">
-                    </td>
-                    <td>Task A</td>
-                    <td>
-                      <span class="label l-bg-green shadow-style">Working</span>
-                    </td>
-                    <td>Angelica Ramos</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-green width-per-62" role="progressbar" aria-valuenow="62"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user2.jpg" alt="">
-                    </td>
-                    <td>Task B</td>
-                    <td>
-                      <span class="label l-bg-purple shadow-style">Completed</span>
-                    </td>
-                    <td>Ashton Cox</td>
-                    <td>
-                      <div class="progress shadow-style">
-                        <div class="progress-bar l-bg-purple width-per-40" role="progressbar" aria-valuenow="40"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </td>
-                    <td>
-                      <i class="far fa-file-pdf tbl-pdf"></i>
-                    </td>
-                    <td>
-                      <button mat-stroked-button color="primary">Details</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="col time-out">
+              <h5 class="mb-0">Time Out:</h5>
+              <p class="display-time">5:00 PM</p>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>Todo List</h2>
-          </div>
-          <div class="body">
-            <ng-scrollbar style="height: 375px" visibility="hover">
-              <div cdkDropList class="task-list" (cdkDropListDropped)="drop($event)">
-                <div class="task-box" *ngFor="let task of tasks" cdkDrag>
-                  <div>
-                    <div class="task-handle m-r-20" cdkDragHandle>
-                      <mat-icon aria-hidden="false">drag_indicator</mat-icon>
-                    </div>
-                  </div>
-                  <mat-checkbox (change)="toggle(task)" [checked]="!!task.done" class="m-r-15" color="primary">
-                  </mat-checkbox>
-                  <div class="task-custom-placeholder" *cdkDragPlaceholder></div>
-                  <div matTooltip="Title" [ngClass]="{done:task.done}">
-                    {{task.title}}</div>
-                  <div
-                    [ngClass]="{'task-low': task.priority==='Low', 'task-high': task.priority==='High','task-normal': task.priority==='Normal'}">
-                    <mat-icon matTooltip="Low" aria-hidden="false" class="lbl-low" *ngIf="task?.priority === 'Low'">
-                      arrow_downward
-                    </mat-icon>
-                    <mat-icon matTooltip="High" aria-hidden="false" class="lbl-high" *ngIf="task?.priority === 'High'">
-                      arrow_upward
-                    </mat-icon>
-                    <mat-icon matTooltip="Normal" aria-hidden="false" class="lbl-normal"
-                      *ngIf="task?.priority === 'Normal'">
-                      remove</mat-icon>
-                    {{task.priority}}
-                  </div>
-                </div>
-              </div>
-            </ng-scrollbar>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>Ticket Status</h2>
-          </div>
-          <div class="body">
-            <div id="chart">
-              <apx-chart [series]="gaugeChartOptions.series2!" [chart]="gaugeChartOptions.chart!"
-                [plotOptions]="gaugeChartOptions.plotOptions!" [labels]="gaugeChartOptions.labels!"
-                [fill]="gaugeChartOptions.fill!" [stroke]="gaugeChartOptions.stroke!"></apx-chart>
-            </div>
-            <div class="m-t-40 mb-2">
-              <div class="row text-center">
-                <div class="col-4 border-right">
-                  <h4 class="m-b-0">67%</h4>
-                  <span class="font-14 text-muted">New Ticket</span>
-                </div>
-                <div class="col-4 border-right">
-                  <h4 class="m-b-0">33%</h4>
-                  <span class="font-14 text-muted">Repeat Ticket</span>
-                </div>
-                <div class="col-4">
-                  <h4 class="m-b-0">1 Day</h4>
-                  <span class="font-14 text-muted">Duration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-        <div class="card">
-          <div class="header">
-            <h2>Ticket Resolved</h2>
-          </div>
-          <div class="body">
-            <apx-chart [series]="stackBarChart.series!" [chart]="stackBarChart.chart!"
-              [dataLabels]="stackBarChart.dataLabels!" [plotOptions]="stackBarChart.plotOptions!"
-              [grid]="stackBarChart.grid!" [grid]="stackBarChart.grid!" [responsive]="stackBarChart.responsive!"
-              [xaxis]="stackBarChart.xaxis!" [legend]="stackBarChart.legend!" [fill]="stackBarChart.fill!"></apx-chart>
-            <div class="row text-center ml-0 msr-0 pb-3">
-              <div class="col-6 border-right">
-                <div class="h4 fw-bold mb-0">30%</div><span class="small text-gray">Last week</span>
-              </div>
-              <div class="col-6">
-                <div class="h4 fw-bold mb-0">70%</div><span class="small text-gray">Last month</span>
-              </div>
-            </div>
+          </div> -->
+          <br>
+          <br>
+          <br>
+          <div class="buttons-container d-flex justify-content-center mt-4">
+            <button class="btn btn-success high-end-button hover-effect" style="margin-right: 10px;">Time In</button>
+            <button class="btn btn-danger high-end-button">Time Out</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="time-display bg-dark text-light p-4 rounded">
+  <h3 class="mb-4">Time Tracking</h3>
+  <div class="d-flex flex-column align-items-center">
+    <div>
+      <h5 class="mb-0">Current Time:</h5>
+      <p class="display-time" style="color: white;">{{ currentTime }}</p>
+    </div> -->
+    <!-- <div>
+      <h5 class="mb-0">Current Date:</h5>
+      <p class="display-date">{{ currentDate | date: 'mediumDate' }}</p>
+    </div> -->
+  <!-- </div>
+  <div class="d-flex justify-content-center mt-4">
+    <button id="time-in-button" class="btn btn-primary mr-2">Time In</button>
+    <button id="time-out-button" class="btn btn-danger">Time Out</button>
+  </div>
+</div> -->

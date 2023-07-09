@@ -28,6 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<EmployeeService>();
+builder.Services.AddTransient<LeaveService>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<DataContext>(opt =>

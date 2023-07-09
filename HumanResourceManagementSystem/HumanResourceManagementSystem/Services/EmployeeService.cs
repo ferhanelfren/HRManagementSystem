@@ -55,65 +55,6 @@ namespace HumanResourceManagementSystem.Services
             
         }
 
-
-        //public async Task<Response> AddOrUpdateDepartments([FromBody] Departments departments)
-        //{
-        //    try
-        //    {
-        //        Departments department;
-
-        //        if (departments.Id != 0)
-        //        {
-        //            // Update existing department
-        //            department = await _dataContext.Departments.FindAsync(departments.Id);
-        //            if (department == null)
-        //            {
-        //                var responseNotFound = new Response
-        //                {
-        //                    Status = "Failed",
-        //                    Message = "Department not found for the given Id: " + departments.Id
-        //                };
-        //                return responseNotFound;
-        //            }
-
-        //            // Update department properties
-        //            department.DepartmentName = departments.DepartmentName;
-        //            department.TimeStamp = DateTime.Now;
-        //        }
-        //        else
-        //        {
-        //            // Add new department
-        //            department = new Departments
-        //            {
-        //                DepartmentName = departments.DepartmentName,
-        //                TimeStamp = DateTime.Now
-        //            };
-
-        //            _dataContext.Departments.Add(department);
-        //        }
-
-        //        await _dataContext.SaveChangesAsync();
-
-        //        var response = new Response
-        //        {
-        //            Status = "Success",
-        //            Message = department.Id != 0 ? "Department updated successfully." : "Department added successfully."
-        //        };
-
-        //        return response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        var errorResponse = new Response
-        //        {
-        //            Status = "Failed",
-        //            Message = "Error adding/updating department: " + ex.Message
-        //        };
-
-        //        return errorResponse;
-        //    }
-        //}
-
         public async Task<Response> UpdateDepartment(int id, [FromBody] Departments departments)
         {
             try

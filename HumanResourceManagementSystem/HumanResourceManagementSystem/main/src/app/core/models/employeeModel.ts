@@ -1,6 +1,7 @@
 import { FileParameter } from "src/app/hrms-swagger"
 
 export class EmployeeModel{
+    id: number;
     imageFile: FileParameter;
     username: string;
     password: string;

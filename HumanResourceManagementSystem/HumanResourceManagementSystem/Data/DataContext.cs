@@ -11,6 +11,7 @@ namespace HumanResourceManagementSystem.Data
 
         public DbSet<Positions> Positions { get; set; }
         public DbSet<Departments> Departments { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 

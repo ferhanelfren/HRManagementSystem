@@ -12,7 +12,7 @@ import { EmployeeModel } from 'src/app/core/models/employeeModel';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { DepartmentsService } from 'src/app/core/service/departments.service';
 import { PositionsService } from 'src/app/core/service/positions.service';
-import { DepartmentsVM, FileParameter,FileResponse, Image, PositionsVM, } from 'src/app/hrms-swagger';
+import { DepartmentsVM, FileParameter,FileResponse, PositionsVM, } from 'src/app/hrms-swagger';
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
@@ -23,7 +23,7 @@ export class AddEmployeeComponent {
 
   hide3 = true;
   agree3 = false;
-  imageModel: Image;
+  // imageModel: Image;
   selectedFile: File;
   positionNameFilter: string;
   positionsNameVM: PositionsVM[];

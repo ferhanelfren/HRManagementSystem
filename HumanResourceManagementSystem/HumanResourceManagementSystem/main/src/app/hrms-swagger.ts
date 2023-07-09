@@ -347,6 +347,65 @@ export class AccountClient {
         return _observableOf(null as any);
     }
 
+    updateEmployee(id: string, userVm: HRMSUserVm): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Account/UpdateEmployee/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(userVm);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateEmployee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateEmployee(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+        }));
+    }
+
+    protected processUpdateEmployee(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     initializeAdmin(): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/Account/InitializeAdmin";
         url_ = url_.replace(/[?&]$/, "");
@@ -1020,62 +1079,6 @@ export class EmployeeClient {
         }
         return _observableOf(null as any);
     }
-
-    uploadImage(imageModel: Image): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Employee/UploadImage";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(imageModel);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUploadImage(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUploadImage(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse | null>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<FileResponse | null>;
-        }));
-    }
-
-    protected processUploadImage(response: HttpResponseBase): Observable<FileResponse | null> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
 }
 
 export class LoginVM implements ILoginVM {
@@ -1123,6 +1126,345 @@ export class LoginVM implements ILoginVM {
 export interface ILoginVM {
     username: string;
     password: string;
+}
+
+export class HRMSUserVm implements IHRMSUserVm {
+    imageFile?: any | undefined;
+    username?: string | undefined;
+    password?: string | undefined;
+    email?: string | undefined;
+    lastName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    extentName?: string | undefined;
+    phoneNumber?: string | undefined;
+    gender?: string | undefined;
+    birthDate!: Date;
+    placeBirth?: string | undefined;
+    bloodType?: string | undefined;
+    height?: string | undefined;
+    weight?: string | undefined;
+    citizenship?: string | undefined;
+    civilStatus?: string | undefined;
+    religion?: string | undefined;
+    ethnicity?: string | undefined;
+    tribalAffiliation?: string | undefined;
+    presentAddress?: string | undefined;
+    presentCityMun?: string | undefined;
+    presentProvince?: string | undefined;
+    presentZip?: string | undefined;
+    permanentAddress?: string | undefined;
+    permanentCityMun?: string | undefined;
+    permanentProvince?: string | undefined;
+    permanentZip?: string | undefined;
+    dateHired!: Date;
+    nationalIDNo?: string | undefined;
+    tinNo?: string | undefined;
+    sssNo?: string | undefined;
+    pagibigNo?: string | undefined;
+    philHealthNo?: string | undefined;
+    spouseFullName?: string | undefined;
+    spouseContactNo?: string | undefined;
+    spouseOccupation?: string | undefined;
+    spouseCompanyName?: string | undefined;
+    spouseCompanyAdd?: string | undefined;
+    fatherName?: string | undefined;
+    fatherOccupation?: string | undefined;
+    motherName?: string | undefined;
+    motherOccupation?: string | undefined;
+    govLicensureExam?: string | undefined;
+    dateExam?: string | undefined;
+    rating?: string | undefined;
+    regNo?: string | undefined;
+    placeofExam?: string | undefined;
+    dateRegitered?: string | undefined;
+    validity?: string | undefined;
+    remarks?: string | undefined;
+    primarySchool?: string | undefined;
+    primaryAcademicHonor?: string | undefined;
+    primaryYearGraduated?: string | undefined;
+    secondarySchool?: string | undefined;
+    secondaryAcademicHonor?: string | undefined;
+    secondaryYearGraduated?: string | undefined;
+    tertiarySchool?: string | undefined;
+    tertiaryAcademicHonor?: string | undefined;
+    degreeEarned?: string | undefined;
+    major?: string | undefined;
+    tertiaryYearGraduated?: string | undefined;
+    mastersSchool?: string | undefined;
+    mastersAcademicHonor?: string | undefined;
+    mastersDegreeEarned?: string | undefined;
+    mastersMajor?: string | undefined;
+    mastersYearGraduated?: string | undefined;
+    phdSchool?: string | undefined;
+    phdAcademicHonor?: string | undefined;
+    phdDegreeEarned?: string | undefined;
+    phdMajor?: string | undefined;
+    phdYearGraduated?: string | undefined;
+    positionName?: string | undefined;
+    employeeNumber?: string | undefined;
+    departmentName?: string | undefined;
+
+    constructor(data?: IHRMSUserVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.imageFile = _data["imageFile"];
+            this.username = _data["username"];
+            this.password = _data["password"];
+            this.email = _data["email"];
+            this.lastName = _data["lastName"];
+            this.firstName = _data["firstName"];
+            this.middleName = _data["middleName"];
+            this.extentName = _data["extentName"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.gender = _data["gender"];
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.placeBirth = _data["placeBirth"];
+            this.bloodType = _data["bloodType"];
+            this.height = _data["height"];
+            this.weight = _data["weight"];
+            this.citizenship = _data["citizenship"];
+            this.civilStatus = _data["civilStatus"];
+            this.religion = _data["religion"];
+            this.ethnicity = _data["ethnicity"];
+            this.tribalAffiliation = _data["tribalAffiliation"];
+            this.presentAddress = _data["presentAddress"];
+            this.presentCityMun = _data["presentCityMun"];
+            this.presentProvince = _data["presentProvince"];
+            this.presentZip = _data["presentZip"];
+            this.permanentAddress = _data["permanentAddress"];
+            this.permanentCityMun = _data["permanentCityMun"];
+            this.permanentProvince = _data["permanentProvince"];
+            this.permanentZip = _data["permanentZip"];
+            this.dateHired = _data["dateHired"] ? new Date(_data["dateHired"].toString()) : <any>undefined;
+            this.nationalIDNo = _data["nationalIDNo"];
+            this.tinNo = _data["tinNo"];
+            this.sssNo = _data["sssNo"];
+            this.pagibigNo = _data["pagibigNo"];
+            this.philHealthNo = _data["philHealthNo"];
+            this.spouseFullName = _data["spouseFullName"];
+            this.spouseContactNo = _data["spouseContactNo"];
+            this.spouseOccupation = _data["spouseOccupation"];
+            this.spouseCompanyName = _data["spouseCompanyName"];
+            this.spouseCompanyAdd = _data["spouseCompanyAdd"];
+            this.fatherName = _data["fatherName"];
+            this.fatherOccupation = _data["fatherOccupation"];
+            this.motherName = _data["motherName"];
+            this.motherOccupation = _data["motherOccupation"];
+            this.govLicensureExam = _data["govLicensureExam"];
+            this.dateExam = _data["dateExam"];
+            this.rating = _data["rating"];
+            this.regNo = _data["regNo"];
+            this.placeofExam = _data["placeofExam"];
+            this.dateRegitered = _data["dateRegitered"];
+            this.validity = _data["validity"];
+            this.remarks = _data["remarks"];
+            this.primarySchool = _data["primarySchool"];
+            this.primaryAcademicHonor = _data["primaryAcademicHonor"];
+            this.primaryYearGraduated = _data["primaryYearGraduated"];
+            this.secondarySchool = _data["secondarySchool"];
+            this.secondaryAcademicHonor = _data["secondaryAcademicHonor"];
+            this.secondaryYearGraduated = _data["secondaryYearGraduated"];
+            this.tertiarySchool = _data["tertiarySchool"];
+            this.tertiaryAcademicHonor = _data["tertiaryAcademicHonor"];
+            this.degreeEarned = _data["degreeEarned"];
+            this.major = _data["major"];
+            this.tertiaryYearGraduated = _data["tertiaryYearGraduated"];
+            this.mastersSchool = _data["mastersSchool"];
+            this.mastersAcademicHonor = _data["mastersAcademicHonor"];
+            this.mastersDegreeEarned = _data["mastersDegreeEarned"];
+            this.mastersMajor = _data["mastersMajor"];
+            this.mastersYearGraduated = _data["mastersYearGraduated"];
+            this.phdSchool = _data["phdSchool"];
+            this.phdAcademicHonor = _data["phdAcademicHonor"];
+            this.phdDegreeEarned = _data["phdDegreeEarned"];
+            this.phdMajor = _data["phdMajor"];
+            this.phdYearGraduated = _data["phdYearGraduated"];
+            this.positionName = _data["positionName"];
+            this.employeeNumber = _data["employeeNumber"];
+            this.departmentName = _data["departmentName"];
+        }
+    }
+
+    static fromJS(data: any): HRMSUserVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new HRMSUserVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["imageFile"] = this.imageFile;
+        data["username"] = this.username;
+        data["password"] = this.password;
+        data["email"] = this.email;
+        data["lastName"] = this.lastName;
+        data["firstName"] = this.firstName;
+        data["middleName"] = this.middleName;
+        data["extentName"] = this.extentName;
+        data["phoneNumber"] = this.phoneNumber;
+        data["gender"] = this.gender;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["placeBirth"] = this.placeBirth;
+        data["bloodType"] = this.bloodType;
+        data["height"] = this.height;
+        data["weight"] = this.weight;
+        data["citizenship"] = this.citizenship;
+        data["civilStatus"] = this.civilStatus;
+        data["religion"] = this.religion;
+        data["ethnicity"] = this.ethnicity;
+        data["tribalAffiliation"] = this.tribalAffiliation;
+        data["presentAddress"] = this.presentAddress;
+        data["presentCityMun"] = this.presentCityMun;
+        data["presentProvince"] = this.presentProvince;
+        data["presentZip"] = this.presentZip;
+        data["permanentAddress"] = this.permanentAddress;
+        data["permanentCityMun"] = this.permanentCityMun;
+        data["permanentProvince"] = this.permanentProvince;
+        data["permanentZip"] = this.permanentZip;
+        data["dateHired"] = this.dateHired ? this.dateHired.toISOString() : <any>undefined;
+        data["nationalIDNo"] = this.nationalIDNo;
+        data["tinNo"] = this.tinNo;
+        data["sssNo"] = this.sssNo;
+        data["pagibigNo"] = this.pagibigNo;
+        data["philHealthNo"] = this.philHealthNo;
+        data["spouseFullName"] = this.spouseFullName;
+        data["spouseContactNo"] = this.spouseContactNo;
+        data["spouseOccupation"] = this.spouseOccupation;
+        data["spouseCompanyName"] = this.spouseCompanyName;
+        data["spouseCompanyAdd"] = this.spouseCompanyAdd;
+        data["fatherName"] = this.fatherName;
+        data["fatherOccupation"] = this.fatherOccupation;
+        data["motherName"] = this.motherName;
+        data["motherOccupation"] = this.motherOccupation;
+        data["govLicensureExam"] = this.govLicensureExam;
+        data["dateExam"] = this.dateExam;
+        data["rating"] = this.rating;
+        data["regNo"] = this.regNo;
+        data["placeofExam"] = this.placeofExam;
+        data["dateRegitered"] = this.dateRegitered;
+        data["validity"] = this.validity;
+        data["remarks"] = this.remarks;
+        data["primarySchool"] = this.primarySchool;
+        data["primaryAcademicHonor"] = this.primaryAcademicHonor;
+        data["primaryYearGraduated"] = this.primaryYearGraduated;
+        data["secondarySchool"] = this.secondarySchool;
+        data["secondaryAcademicHonor"] = this.secondaryAcademicHonor;
+        data["secondaryYearGraduated"] = this.secondaryYearGraduated;
+        data["tertiarySchool"] = this.tertiarySchool;
+        data["tertiaryAcademicHonor"] = this.tertiaryAcademicHonor;
+        data["degreeEarned"] = this.degreeEarned;
+        data["major"] = this.major;
+        data["tertiaryYearGraduated"] = this.tertiaryYearGraduated;
+        data["mastersSchool"] = this.mastersSchool;
+        data["mastersAcademicHonor"] = this.mastersAcademicHonor;
+        data["mastersDegreeEarned"] = this.mastersDegreeEarned;
+        data["mastersMajor"] = this.mastersMajor;
+        data["mastersYearGraduated"] = this.mastersYearGraduated;
+        data["phdSchool"] = this.phdSchool;
+        data["phdAcademicHonor"] = this.phdAcademicHonor;
+        data["phdDegreeEarned"] = this.phdDegreeEarned;
+        data["phdMajor"] = this.phdMajor;
+        data["phdYearGraduated"] = this.phdYearGraduated;
+        data["positionName"] = this.positionName;
+        data["employeeNumber"] = this.employeeNumber;
+        data["departmentName"] = this.departmentName;
+        return data;
+    }
+
+    clone(): HRMSUserVm {
+        const json = this.toJSON();
+        let result = new HRMSUserVm();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHRMSUserVm {
+    imageFile?: any | undefined;
+    username?: string | undefined;
+    password?: string | undefined;
+    email?: string | undefined;
+    lastName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    extentName?: string | undefined;
+    phoneNumber?: string | undefined;
+    gender?: string | undefined;
+    birthDate: Date;
+    placeBirth?: string | undefined;
+    bloodType?: string | undefined;
+    height?: string | undefined;
+    weight?: string | undefined;
+    citizenship?: string | undefined;
+    civilStatus?: string | undefined;
+    religion?: string | undefined;
+    ethnicity?: string | undefined;
+    tribalAffiliation?: string | undefined;
+    presentAddress?: string | undefined;
+    presentCityMun?: string | undefined;
+    presentProvince?: string | undefined;
+    presentZip?: string | undefined;
+    permanentAddress?: string | undefined;
+    permanentCityMun?: string | undefined;
+    permanentProvince?: string | undefined;
+    permanentZip?: string | undefined;
+    dateHired: Date;
+    nationalIDNo?: string | undefined;
+    tinNo?: string | undefined;
+    sssNo?: string | undefined;
+    pagibigNo?: string | undefined;
+    philHealthNo?: string | undefined;
+    spouseFullName?: string | undefined;
+    spouseContactNo?: string | undefined;
+    spouseOccupation?: string | undefined;
+    spouseCompanyName?: string | undefined;
+    spouseCompanyAdd?: string | undefined;
+    fatherName?: string | undefined;
+    fatherOccupation?: string | undefined;
+    motherName?: string | undefined;
+    motherOccupation?: string | undefined;
+    govLicensureExam?: string | undefined;
+    dateExam?: string | undefined;
+    rating?: string | undefined;
+    regNo?: string | undefined;
+    placeofExam?: string | undefined;
+    dateRegitered?: string | undefined;
+    validity?: string | undefined;
+    remarks?: string | undefined;
+    primarySchool?: string | undefined;
+    primaryAcademicHonor?: string | undefined;
+    primaryYearGraduated?: string | undefined;
+    secondarySchool?: string | undefined;
+    secondaryAcademicHonor?: string | undefined;
+    secondaryYearGraduated?: string | undefined;
+    tertiarySchool?: string | undefined;
+    tertiaryAcademicHonor?: string | undefined;
+    degreeEarned?: string | undefined;
+    major?: string | undefined;
+    tertiaryYearGraduated?: string | undefined;
+    mastersSchool?: string | undefined;
+    mastersAcademicHonor?: string | undefined;
+    mastersDegreeEarned?: string | undefined;
+    mastersMajor?: string | undefined;
+    mastersYearGraduated?: string | undefined;
+    phdSchool?: string | undefined;
+    phdAcademicHonor?: string | undefined;
+    phdDegreeEarned?: string | undefined;
+    phdMajor?: string | undefined;
+    phdYearGraduated?: string | undefined;
+    positionName?: string | undefined;
+    employeeNumber?: string | undefined;
+    departmentName?: string | undefined;
 }
 
 export class LeaveBalance implements ILeaveBalance {
@@ -1217,7 +1559,6 @@ export class EmployeeEntity implements IEmployeeEntity {
     employeeEducationalBackgrounds?: EmployeeEducationalBackgroundEntity[] | undefined;
     employeeSkills?: EmployeeSkillEntity[] | undefined;
     employeeWorkExperiences?: EmployeeWorkExperienceEntity[] | undefined;
-    positionEntity?: Image | undefined;
     departmentEntity?: DepartmentEntity | undefined;
     employeeStatus?: string | undefined;
     uploadImg?: string | undefined;
@@ -1268,7 +1609,6 @@ export class EmployeeEntity implements IEmployeeEntity {
                 for (let item of _data["employeeWorkExperiences"])
                     this.employeeWorkExperiences!.push(EmployeeWorkExperienceEntity.fromJS(item));
             }
-            this.positionEntity = _data["positionEntity"] ? Image.fromJS(_data["positionEntity"]) : <any>undefined;
             this.departmentEntity = _data["departmentEntity"] ? DepartmentEntity.fromJS(_data["departmentEntity"]) : <any>undefined;
             this.employeeStatus = _data["employeeStatus"];
             this.uploadImg = _data["uploadImg"];
@@ -1319,7 +1659,6 @@ export class EmployeeEntity implements IEmployeeEntity {
             for (let item of this.employeeWorkExperiences)
                 data["employeeWorkExperiences"].push(item.toJSON());
         }
-        data["positionEntity"] = this.positionEntity ? this.positionEntity.toJSON() : <any>undefined;
         data["departmentEntity"] = this.departmentEntity ? this.departmentEntity.toJSON() : <any>undefined;
         data["employeeStatus"] = this.employeeStatus;
         data["uploadImg"] = this.uploadImg;
@@ -1358,7 +1697,6 @@ export interface IEmployeeEntity {
     employeeEducationalBackgrounds?: EmployeeEducationalBackgroundEntity[] | undefined;
     employeeSkills?: EmployeeSkillEntity[] | undefined;
     employeeWorkExperiences?: EmployeeWorkExperienceEntity[] | undefined;
-    positionEntity?: Image | undefined;
     departmentEntity?: DepartmentEntity | undefined;
     employeeStatus?: string | undefined;
     uploadImg?: string | undefined;
@@ -1538,57 +1876,6 @@ export interface IEmployeeWorkExperienceEntity {
     workExperienceStarted?: string | undefined;
     workExperienceCompleted?: string | undefined;
     timestamp: Date;
-}
-
-export class Image implements IImage {
-    id!: number;
-    name?: string | undefined;
-    base64Data?: string | undefined;
-
-    constructor(data?: IImage) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.base64Data = _data["base64Data"];
-        }
-    }
-
-    static fromJS(data: any): Image {
-        data = typeof data === 'object' ? data : {};
-        let result = new Image();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["base64Data"] = this.base64Data;
-        return data;
-    }
-
-    clone(): Image {
-        const json = this.toJSON();
-        let result = new Image();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IImage {
-    id: number;
-    name?: string | undefined;
-    base64Data?: string | undefined;
 }
 
 export class DepartmentEntity implements IDepartmentEntity {
@@ -1886,7 +2173,7 @@ export interface IDepartmentsVM {
 }
 
 function formatDate(d: Date) {
-    return d.getFullYear() + '-' +
+    return d.getFullYear() + '-' + 
         (d.getMonth() < 9 ? ('0' + (d.getMonth()+1)) : (d.getMonth()+1)) + '-' +
         (d.getDate() < 10 ? ('0' + d.getDate()) : d.getDate());
 }

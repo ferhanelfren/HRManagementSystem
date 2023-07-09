@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
-import { EmployeeClient, FileResponse, Image, Positions, PositionsVM } from 'src/app/hrms-swagger';
+import { EmployeeClient, FileResponse, Positions, PositionsVM } from 'src/app/hrms-swagger';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,5 @@ export class PositionsService {
     return this.employeeClient.deletePosition(id).pipe(take(1));
   }
 
-  uploadImage(imageModel: Image) {
-    return this.employeeClient.uploadImage(imageModel).pipe(take(1));
-  }
+
 }
