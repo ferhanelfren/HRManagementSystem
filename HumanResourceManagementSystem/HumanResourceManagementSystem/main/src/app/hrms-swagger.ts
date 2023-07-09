@@ -860,6 +860,62 @@ export class EmployeeClient {
         return _observableOf(null as any);
     }
 
+    addLeave(leaveVM: LeaveVM): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Employee/AddLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(leaveVM);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+        }));
+    }
+
+    protected processAddLeave(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getDepartment(departmentNameFilter: string | null | undefined): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/Employee/GetDepartment?";
         if (departmentNameFilter !== undefined && departmentNameFilter !== null)
@@ -1072,6 +1128,171 @@ export class EmployeeClient {
                 fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
             }
             return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    addHolidays(holidaysVM: HolidaysVM): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Employee/AddHolidays";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(holidaysVM);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddHolidays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddHolidays(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+        }));
+    }
+
+    protected processAddHolidays(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getHolidays(holidayNameFilter: string | null | undefined): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Employee/GetHolidays?";
+        if (holidayNameFilter !== undefined && holidayNameFilter !== null)
+            url_ += "holidayNameFilter=" + encodeURIComponent("" + holidayNameFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHolidays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHolidays(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+        }));
+    }
+
+    protected processGetHolidays(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateHoliday(id: number, holidays: Holidays): Observable<Response> {
+        let url_ = this.baseUrl + "/api/Employee/UpdateHoliday/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(holidays);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateHoliday(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateHoliday(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Response>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Response>;
+        }));
+    }
+
+    protected processUpdateHoliday(response: HttpResponseBase): Observable<Response> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Response.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2082,6 +2303,73 @@ export interface IPositions {
     timeStamp: Date;
 }
 
+export class LeaveVM implements ILeaveVM {
+    lastName?: string | undefined;
+    leaveTypes?: string | undefined;
+    applyDate!: Date;
+    leaveFrom!: Date;
+    leaveTo!: Date;
+    noofDays?: string | undefined;
+    reason?: string | undefined;
+
+    constructor(data?: ILeaveVM) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lastName = _data["lastName"];
+            this.leaveTypes = _data["leaveTypes"];
+            this.applyDate = _data["applyDate"] ? new Date(_data["applyDate"].toString()) : <any>undefined;
+            this.leaveFrom = _data["leaveFrom"] ? new Date(_data["leaveFrom"].toString()) : <any>undefined;
+            this.leaveTo = _data["leaveTo"] ? new Date(_data["leaveTo"].toString()) : <any>undefined;
+            this.noofDays = _data["noofDays"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): LeaveVM {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveVM();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lastName"] = this.lastName;
+        data["leaveTypes"] = this.leaveTypes;
+        data["applyDate"] = this.applyDate ? formatDate(this.applyDate) : <any>undefined;
+        data["leaveFrom"] = this.leaveFrom ? formatDate(this.leaveFrom) : <any>undefined;
+        data["leaveTo"] = this.leaveTo ? formatDate(this.leaveTo) : <any>undefined;
+        data["noofDays"] = this.noofDays;
+        data["reason"] = this.reason;
+        return data;
+    }
+
+    clone(): LeaveVM {
+        const json = this.toJSON();
+        let result = new LeaveVM();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILeaveVM {
+    lastName?: string | undefined;
+    leaveTypes?: string | undefined;
+    applyDate: Date;
+    leaveFrom: Date;
+    leaveTo: Date;
+    noofDays?: string | undefined;
+    reason?: string | undefined;
+}
+
 export class PositionsVM implements IPositionsVM {
     positionName?: string | undefined;
     positionDescription?: string | undefined;
@@ -2170,6 +2458,132 @@ export class DepartmentsVM implements IDepartmentsVM {
 
 export interface IDepartmentsVM {
     departmentName?: string | undefined;
+}
+
+export class HolidaysVM implements IHolidaysVM {
+    holidayName?: string | undefined;
+    holidayDate!: Date;
+    holidayLocation?: string | undefined;
+    holidayShift?: string | undefined;
+    holidayDetails?: string | undefined;
+
+    constructor(data?: IHolidaysVM) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.holidayName = _data["holidayName"];
+            this.holidayDate = _data["holidayDate"] ? new Date(_data["holidayDate"].toString()) : <any>undefined;
+            this.holidayLocation = _data["holidayLocation"];
+            this.holidayShift = _data["holidayShift"];
+            this.holidayDetails = _data["holidayDetails"];
+        }
+    }
+
+    static fromJS(data: any): HolidaysVM {
+        data = typeof data === 'object' ? data : {};
+        let result = new HolidaysVM();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["holidayName"] = this.holidayName;
+        data["holidayDate"] = this.holidayDate ? this.holidayDate.toISOString() : <any>undefined;
+        data["holidayLocation"] = this.holidayLocation;
+        data["holidayShift"] = this.holidayShift;
+        data["holidayDetails"] = this.holidayDetails;
+        return data;
+    }
+
+    clone(): HolidaysVM {
+        const json = this.toJSON();
+        let result = new HolidaysVM();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHolidaysVM {
+    holidayName?: string | undefined;
+    holidayDate: Date;
+    holidayLocation?: string | undefined;
+    holidayShift?: string | undefined;
+    holidayDetails?: string | undefined;
+}
+
+export class Holidays implements IHolidays {
+    id!: number;
+    holidayName?: string | undefined;
+    holidayDate!: Date;
+    holidayLocation?: string | undefined;
+    holidayShift?: string | undefined;
+    holidayDetails?: string | undefined;
+    timeStamp!: Date;
+
+    constructor(data?: IHolidays) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.holidayName = _data["holidayName"];
+            this.holidayDate = _data["holidayDate"] ? new Date(_data["holidayDate"].toString()) : <any>undefined;
+            this.holidayLocation = _data["holidayLocation"];
+            this.holidayShift = _data["holidayShift"];
+            this.holidayDetails = _data["holidayDetails"];
+            this.timeStamp = _data["timeStamp"] ? new Date(_data["timeStamp"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Holidays {
+        data = typeof data === 'object' ? data : {};
+        let result = new Holidays();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["holidayName"] = this.holidayName;
+        data["holidayDate"] = this.holidayDate ? this.holidayDate.toISOString() : <any>undefined;
+        data["holidayLocation"] = this.holidayLocation;
+        data["holidayShift"] = this.holidayShift;
+        data["holidayDetails"] = this.holidayDetails;
+        data["timeStamp"] = this.timeStamp ? this.timeStamp.toISOString() : <any>undefined;
+        return data;
+    }
+
+    clone(): Holidays {
+        const json = this.toJSON();
+        let result = new Holidays();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHolidays {
+    id: number;
+    holidayName?: string | undefined;
+    holidayDate: Date;
+    holidayLocation?: string | undefined;
+    holidayShift?: string | undefined;
+    holidayDetails?: string | undefined;
+    timeStamp: Date;
 }
 
 function formatDate(d: Date) {
