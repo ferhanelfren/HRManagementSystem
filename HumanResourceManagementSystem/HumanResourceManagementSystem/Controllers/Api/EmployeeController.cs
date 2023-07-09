@@ -191,8 +191,6 @@ namespace HumanResourceManagementSystem.Controllers.Api
             }
         }
 
-
-
         [HttpPost("AddPositions")]
         public async Task<IActionResult> AddPositions(PositionsVM positionVM)
         {
@@ -223,7 +221,45 @@ namespace HumanResourceManagementSystem.Controllers.Api
             }
         }
 
-       
+        [HttpPost("AddHolidays")]
+        public async Task<IActionResult> AddHolidays(HolidaysVM holidaysVM)
+        {
+            var response = await _employeeService.AddHolidays(holidaysVM);
+
+            if (response.Status == "Success")
+            {
+                return Ok(new { response.Message });
+            }
+            else
+            {
+                return BadRequest(new { response.Message });
+            }
+        }
+
+        [HttpGet("GetHolidays")]
+        public async Task<ActionResult> GetHolidays(string holidayNameFilter = null)
+        {
+            try
+            {
+                var positions = await _employeeService.GetHolidays(holidayNameFilter);
+                if (positions == null)
+                {
+                    return BadRequest("Failed to retrieve data.");
+                }
+                return Ok(positions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving holidays.");
+            }
+        }
+        [HttpPut("UpdateHoliday/{id}")]
+        public async Task<ActionResult<Response>> UpdateHoliday(int id, [FromBody] Holidays holidays)
+        {
+            var response = await _employeeService.UpdateHoliday(id, holidays);
+            return response;
+        }
+
 
     }
 }

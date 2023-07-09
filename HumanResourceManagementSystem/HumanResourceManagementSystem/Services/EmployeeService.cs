@@ -19,6 +19,8 @@ namespace HumanResourceManagementSystem.Services
             _dataContext = dataContext;
         }
 
+
+
         public async Task<Response> AddPositions([FromBody] PositionsVM positionVM)
         {
             try
@@ -51,8 +53,6 @@ namespace HumanResourceManagementSystem.Services
 
                 return response;
             }
-
-            
         }
 
         public async Task<Response> UpdateDepartment(int id, [FromBody] Departments departments)
@@ -328,12 +328,113 @@ namespace HumanResourceManagementSystem.Services
 
 
 
+        public async Task<Response> AddHolidays([FromBody] HolidaysVM holidaysVM)
+        {
+            try
+            {
+                var h = new Holidays
+                {
+                    HolidayName = holidaysVM.HolidayName,
+                    HolidayDate = holidaysVM.HolidayDate,
+                    HolidayLocation = holidaysVM.HolidayLocation,
+                    HolidayShift = holidaysVM.HolidayShift, 
+                    HolidayDetails = holidaysVM.HolidayDetails,
+                    TimeStamp = DateTime.Now
+                };
+
+                _dataContext.Holidays.Add(h);
+                await _dataContext.SaveChangesAsync();
+
+                var response = new Response
+                {
+                    Status = "Success",
+                    Message = "Holiday added successfully."
+                };
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var response = new Response
+                {
+                    Status = "Failed",
+                    Message = "Error adding holiday: " + ex.Message
+                };
+
+                return response;
+            }
+        }
+
+        public async Task<List<Holidays>> GetHolidays(string holidayNameFilter = null)
+        {
+            var query = _dataContext.Holidays.AsQueryable();
+
+            if (!string.IsNullOrEmpty(holidayNameFilter))
+            {
+                //query = query.Where(d => string.Equals(d.DepartmentName, departmentNameFilter, StringComparison.OrdinalIgnoreCase));
+                // Apply the filter based on the department name
+                query = query.Where(d => d.HolidayName.Contains(holidayNameFilter));
+                // query = query.Where(d => d.DepartmentName.ToLower().Contains(departmentNameFilter.ToLower()));
+            }
+
+            var holidays = await query.ToListAsync();
+            return holidays;
+        }
+
+        public async Task<Response> UpdateHoliday(int id, [FromBody] Holidays holidays)
+        {
+            try
+            {
+                var holy = await _dataContext.Holidays.FindAsync(id);
+
+                if (holy == null)
+                {
+                    var notFoundResponse = new Response
+                    {
+                        Status = "Failed",
+                        Message = "Department not found."
+                    };
+
+                    return notFoundResponse;
+                }
+
+
+                holy.HolidayName = holidays.HolidayName;
+                holy.HolidayDate = holidays.HolidayDate;
+                holy.HolidayLocation = holidays.HolidayLocation;
+                holy.HolidayShift = holidays.HolidayShift;
+                holy.HolidayDetails = holidays.HolidayDetails;
+                holy.TimeStamp = DateTime.Now;
+
+                await _dataContext.SaveChangesAsync();
+
+                var successResponse = new Response
+                {
+                    Status = "Success",
+                    Message = "Holiday updated successfully."
+                };
+
+                return successResponse;
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new Response
+                {
+                    Status = "Failed",
+                    Message = "Error updating holiday: " + ex.Message
+                };
+
+                return errorResponse;
+            }
+        }
+
+
 
 
 
         //public async Task<string> UploadImage([FromBody]Image imageModel)
         //{
-           
+
         //    byte[] imageData = Convert.FromBase64String(imageModel.Base64Data);
         //    string fileName = $"{Guid.NewGuid()}-{imageModel.Name}";
         //    string imagePath = Path.Combine("uploads", fileName);

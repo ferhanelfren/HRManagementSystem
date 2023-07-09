@@ -1,14 +1,11 @@
-﻿namespace HRManagementSystem_MVC_.Models
+﻿namespace HumanResourceManagementSystem.ViewModels
 {
-    public class HolidayEntity
+    public class HolidaysVM
     {
-        public int Id { get; set; }
         public string HolidayName { get; set; }
-        public DateOnly HolidayDate { get; set; }
+        public DateTime HolidayDate { get; set; }
         public string HolidayLocation { get; set; }
         public string HolidayShift { get; set; }
         public string HolidayDetails { get; set; }
-        public DateOnly TimeStamp { get; set; }
-
     }
 }

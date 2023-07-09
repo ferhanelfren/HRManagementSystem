@@ -17,6 +17,35 @@ namespace HumanResourceManagementSystem.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
 
+            modelBuilder.Entity("HRManagementSystem_MVC_.Models.Holidays", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("HolidayDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HolidayDetails")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HolidayLocation")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HolidayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HolidayShift")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holidays");
+                });
+
             modelBuilder.Entity("HRManagementSystem_MVC_.Models.Leave", b =>
                 {
                     b.Property<int>("Id")
