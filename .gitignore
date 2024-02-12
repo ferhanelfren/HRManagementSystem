@@ -75,3 +75,7 @@
 /HumanResourceManagementSystem/HumanResourceManagementSystem/main/src/app/swagger-generated.ts
 *.cache
 *.cache
+HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.AssemblyInfo.cs
+HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.AssemblyInfoInputs.cache
+HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.RazorAssemblyInfo.cache
+HumanResourceManagementSystem/HumanResourceManagementSystem/obj/Debug/net6.0/HumanResourceManagementSystem.RazorAssemblyInfo.cs
